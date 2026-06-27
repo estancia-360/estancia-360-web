@@ -37,9 +37,9 @@ export function AnimatedStat({ value, label }: AnimatedStatProps) {
   }, [isInView, value]);
 
   return (
-    <div className="px-7 text-center">
-      <span ref={ref} className="block font-heading text-[1.8rem] font-extrabold tracking-tight text-white">
-        {display}
+    <div className="px-3 text-center sm:px-7">
+      <span className="block font-heading text-[1.5rem] font-extrabold tracking-tight text-white sm:text-[1.8rem]">
+        <span ref={ref}>{display}</span>
       </span>
       <span className="mt-0.5 block text-xs text-white/60">{label}</span>
     </div>

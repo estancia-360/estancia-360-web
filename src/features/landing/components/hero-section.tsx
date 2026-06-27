@@ -58,11 +58,11 @@ export function HeroSection() {
           </CtaLink>
         </div>
 
-        <div className="mb-14 inline-flex items-center rounded-3xl border border-white/12 bg-white/8 px-9 py-5 backdrop-blur-md">
+        <div className="mb-14 flex flex-wrap items-center justify-center gap-y-3 rounded-3xl border border-white/12 bg-white/8 px-5 py-4 backdrop-blur-md sm:px-9 sm:py-5">
           <AnimatedStat value="500+" label="Estancias activas" />
-          <span className="h-10 w-px bg-white/15" />
+          <span className="hidden h-10 w-px bg-white/15 sm:block" />
           <AnimatedStat value="120k+" label="Animales registrados" />
-          <span className="h-10 w-px bg-white/15" />
+          <span className="hidden h-10 w-px bg-white/15 sm:block" />
           <AnimatedStat value="9" label="Departamentos" />
         </div>
       </Container>
