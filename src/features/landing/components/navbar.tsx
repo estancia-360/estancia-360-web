@@ -55,7 +55,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden shrink-0 items-center gap-2.5 lg:flex">
-          <CtaLink href="#demo" variant="nav-outline" size="sm">
+          <CtaLink href="/login" variant="nav-outline" size="sm">
             Ingresar
           </CtaLink>
           <CtaLink href="#demo" variant="nav-primary" size="sm">
@@ -92,7 +92,7 @@ export function Navbar() {
           </a>
         ))}
         <div className="mt-3 flex gap-2.5 border-t border-brand-blue/10 pt-4">
-          <CtaLink href="#demo" variant="nav-outline" size="sm" onClick={() => setIsMenuOpen(false)}>
+          <CtaLink href="/login" variant="nav-outline" size="sm" onClick={() => setIsMenuOpen(false)}>
             Ingresar
           </CtaLink>
           <CtaLink href="#demo" variant="nav-primary" size="sm" onClick={() => setIsMenuOpen(false)}>
