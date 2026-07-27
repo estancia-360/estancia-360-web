@@ -6,6 +6,7 @@ import { ProtectedRoute } from "@/features/auth/components/protected-route";
 import { AdminLayout } from "@/features/admin/layout/admin-layout";
 import { AdminMetricsPage } from "@/features/admin/pages/admin-metrics-page";
 import { AdminSubscriptionsPage } from "@/features/admin/pages/admin-subscriptions-page";
+import { AdminUsersPage } from "@/features/admin/pages/admin-users-page";
 
 export const appRouter = createBrowserRouter([
   {
@@ -34,6 +35,7 @@ export const appRouter = createBrowserRouter([
     children: [
       { index: true, element: <AdminMetricsPage /> },
       { path: "subscriptions", element: <AdminSubscriptionsPage /> },
+      { path: "users", element: <AdminUsersPage /> },
     ],
   },
 ]);

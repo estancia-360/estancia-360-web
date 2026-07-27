@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router";
-import { LayoutDashboard, ReceiptText, LogOut, User } from "lucide-react";
+import { LayoutDashboard, ReceiptText, Users, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BrandLogo } from "@/features/landing/components/brand-logo";
 import {
@@ -29,9 +29,18 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/features/auth/context/use-auth";
 
-const navItems = [
-  { to: "/admin", label: "Métricas", icon: LayoutDashboard, end: true },
-  { to: "/admin/subscriptions", label: "Suscripciones", icon: ReceiptText, end: false },
+const navGroups = [
+  {
+    label: "Pagos",
+    items: [
+      { to: "/admin", label: "Métricas", icon: LayoutDashboard, end: true },
+      { to: "/admin/subscriptions", label: "Suscripciones", icon: ReceiptText, end: false },
+    ],
+  },
+  {
+    label: "Administración",
+    items: [{ to: "/admin/users", label: "Usuarios", icon: Users, end: false }],
+  },
 ];
 
 export function AdminLayout() {
@@ -51,30 +60,32 @@ export function AdminLayout() {
         </SidebarHeader>
 
         <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Pagos</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {navItems.map((item) => (
-                  <SidebarMenuItem key={item.to}>
-                    <SidebarMenuButton
-                      tooltip={item.label}
-                      render={
-                        <NavLink
-                          to={item.to}
-                          end={item.end}
-                          className={({ isActive }) => cn(isActive && "bg-sidebar-accent text-sidebar-accent-foreground")}
-                        />
-                      }
-                    >
-                      <item.icon />
-                      <span>{item.label}</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+          {navGroups.map((group) => (
+            <SidebarGroup key={group.label}>
+              <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {group.items.map((item) => (
+                    <SidebarMenuItem key={item.to}>
+                      <SidebarMenuButton
+                        tooltip={item.label}
+                        render={
+                          <NavLink
+                            to={item.to}
+                            end={item.end}
+                            className={({ isActive }) => cn(isActive && "bg-sidebar-accent text-sidebar-accent-foreground")}
+                          />
+                        }
+                      >
+                        <item.icon />
+                        <span>{item.label}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          ))}
         </SidebarContent>
 
         <SidebarFooter>
