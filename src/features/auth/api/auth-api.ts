@@ -1,11 +1,16 @@
 import { apiFetch } from "@/lib/api-client";
 
+export interface OwnedRanch {
+  id: number;
+  name: string;
+}
+
 export interface LoginResponse {
   message: string;
   accessToken: string;
   idUser: number;
   idRole: number;
-  idRanch: number | null;
+  ranches: OwnedRanch[];
 }
 
 export function login(email: string, password: string): Promise<LoginResponse> {

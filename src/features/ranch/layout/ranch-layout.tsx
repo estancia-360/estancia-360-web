@@ -1,5 +1,17 @@
-import { NavLink, Outlet } from "react-router";
-import { LayoutDashboard, Beef, Baby, Sprout, UtensilsCrossed, Stethoscope, ArrowLeftRight, LogOut, User, Users } from "lucide-react";
+import { NavLink, Outlet, useNavigate } from "react-router";
+import {
+  LayoutDashboard,
+  Beef,
+  Baby,
+  Sprout,
+  UtensilsCrossed,
+  Stethoscope,
+  ArrowLeftRight,
+  LogOut,
+  User,
+  Users,
+  Repeat,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BrandLogo } from "@/features/landing/components/brand-logo";
 import {
@@ -30,6 +42,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/features/auth/context/use-auth";
 import { useRanchSubscription } from "@/features/subscriptions/context/ranch-subscription-context";
+import { clearSelectedRanchId } from "@/features/ranch/lib/selected-ranch-storage";
 
 // Cada módulo mobile online tiene su lugar reservado acá desde ya — todavía
 // apuntan a la misma página "en construcción" hasta que se implementen uno
@@ -60,7 +73,14 @@ const navGroups = [
 export function RanchLayout() {
   const { session, logout } = useAuth();
   const subscription = useRanchSubscription();
+  const navigate = useNavigate();
   const initials = `U${session?.idUser}`.slice(0, 2).toUpperCase();
+  const hasMultipleRanches = (session?.ranches.length ?? 0) > 1;
+
+  const handleSwitchRanch = () => {
+    clearSelectedRanchId();
+    navigate("/ranches");
+  };
 
   return (
     <SidebarProvider>
@@ -127,6 +147,12 @@ export function RanchLayout() {
                   <User className="size-3.5" />
                   {subscription.ranch.name}
                 </DropdownMenuLabel>
+                {hasMultipleRanches ? (
+                  <DropdownMenuItem onClick={handleSwitchRanch}>
+                    <Repeat />
+                    Cambiar de estancia
+                  </DropdownMenuItem>
+                ) : null}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout} variant="destructive">
                   <LogOut />

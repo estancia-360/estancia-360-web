@@ -1,8 +1,10 @@
+import type { OwnedRanch } from "@/features/auth/api/auth-api";
+
 export interface StoredSession {
   accessToken: string;
   idUser: number;
   idRole: number;
-  idRanch: number | null;
+  ranches: OwnedRanch[];
 }
 
 const STORAGE_KEY = "estancia360.session";

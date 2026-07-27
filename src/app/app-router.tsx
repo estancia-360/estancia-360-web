@@ -4,6 +4,7 @@ import { LoginPage } from "@/pages/login-page";
 import { ProtectedRoute } from "@/features/auth/components/protected-route";
 import { RequireActivePlan } from "@/features/subscriptions/components/require-active-plan";
 import { RanchLayout } from "@/features/ranch/layout/ranch-layout";
+import { RanchPickerPage } from "@/features/ranch/pages/ranch-picker-page";
 import { RanchOverviewPage } from "@/features/ranch/pages/ranch-overview-page";
 import { RanchTeamPage } from "@/features/ranch/pages/ranch-team-page";
 import { ModuleComingSoon } from "@/features/ranch/components/module-coming-soon";
@@ -22,6 +23,14 @@ export const appRouter = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/ranches",
+    element: (
+      <ProtectedRoute>
+        <RanchPickerPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/dashboard",

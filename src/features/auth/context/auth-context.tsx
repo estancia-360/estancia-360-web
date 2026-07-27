@@ -8,6 +8,7 @@ import {
 } from "@/features/auth/lib/session-storage";
 import { isAdminRole } from "@/features/auth/lib/roles";
 import { AuthContext, type AuthContextValue } from "@/features/auth/context/auth-context-value";
+import { clearSelectedRanchId } from "@/features/ranch/lib/selected-ranch-storage";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<StoredSession | null>(() => readStoredSession());
@@ -18,7 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       accessToken: response.accessToken,
       idUser: response.idUser,
       idRole: response.idRole,
-      idRanch: response.idRanch,
+      ranches: response.ranches,
     };
     writeStoredSession(nextSession);
     setSession(nextSession);
@@ -27,6 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     clearStoredSession();
+    clearSelectedRanchId();
     setSession(null);
   }, []);
 
