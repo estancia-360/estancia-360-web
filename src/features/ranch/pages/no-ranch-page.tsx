@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/components/ui/empty";
 import { useAuth } from "@/features/auth/context/use-auth";
 
-export function RanchDashboardPage() {
-  const { session, logout } = useAuth();
+export function NoRanchPage() {
+  const { logout } = useAuth();
 
   return (
     <div className="min-h-screen bg-brand-cream">
@@ -27,11 +27,10 @@ export function RanchDashboardPage() {
             <EmptyMedia variant="icon">
               <BrandLogo size={40} />
             </EmptyMedia>
-            <EmptyTitle>El panel de tu estancia está en construcción</EmptyTitle>
+            <EmptyTitle>Tu usuario no es dueño de ninguna estancia</EmptyTitle>
             <EmptyDescription>
-              {session?.idRanch
-                ? "Muy pronto vas a poder ver y gestionar tu estancia desde acá. Por ahora, usá la app móvil para tus operaciones diarias."
-                : "Tu usuario todavía no está asociado a ninguna estancia. Contactá a Estancia360 para vincular tu cuenta."}
+              El panel web es solo para el dueño de la estancia. Contactá a Estancia360 para vincular tu cuenta o usá la app móvil si
+              trabajás en una estancia de otra persona.
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
