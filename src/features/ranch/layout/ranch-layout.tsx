@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router";
-import { LayoutDashboard, Beef, Baby, Sprout, UtensilsCrossed, Stethoscope, ArrowLeftRight, LogOut, User } from "lucide-react";
+import { LayoutDashboard, Beef, Baby, Sprout, UtensilsCrossed, Stethoscope, ArrowLeftRight, LogOut, User, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BrandLogo } from "@/features/landing/components/brand-logo";
 import {
@@ -39,6 +39,10 @@ const navGroups = [
   {
     label: "General",
     items: [{ to: "/dashboard", label: "Resumen", icon: LayoutDashboard, end: true }],
+  },
+  {
+    label: "Estancia",
+    items: [{ to: "/dashboard/equipo", label: "Equipo", icon: Users, end: false }],
   },
   {
     label: "Producción",

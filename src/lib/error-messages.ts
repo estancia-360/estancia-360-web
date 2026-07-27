@@ -22,7 +22,21 @@ const ERROR_MESSAGES: Record<string, string> = {
   RANCH_NOT_FOUND: "No se encontró la estancia.",
   SUBSCRIPTION_PLAN_NOT_FOUND: "El plan seleccionado no existe.",
   BILLING_CYCLE_REQUIRED: "Elegí un ciclo de facturación (mensual o anual) para este plan.",
-  SUBSCRIPTION_CAPACITY_EXCEEDED: "La estancia alcanzó el límite de animales de su plan actual.",
+  SUBSCRIPTION_CAPACITY_EXCEEDED: "La estancia alcanzó el límite de animales de su plan actual. Actualizá el plan para agregar más.",
+
+  // Equipo de la estancia
+  RANCH_OWNER_ONLY: "Solo el dueño de la estancia puede hacer esto.",
+
+  // Animales
+  ANIMAL_NOT_FOUND: "No se encontró el animal.",
+  ANIMAL_CODE_ALREADY_EXISTS: "Ya existe un animal registrado con ese código.",
+  SAME_PARENT_CODE: "La madre y el padre no pueden ser el mismo animal.",
+
+  // Cría
+  ANIMAL_ALREADY_PREGNANT: "Este animal ya tiene un diagnóstico de preñez activo — no puede recibir un nuevo servicio hasta que termine ese ciclo.",
+  GESTATION_DIAGNOSIS_NOT_FOUND: "No se encontró el diagnóstico de gestación.",
+  DIAGNOSIS_NOT_PREGNANT: "Ese diagnóstico no confirma preñez — no se puede registrar un parto a partir de él.",
+  PARTURITION_ALREADY_EXISTS: "Ese diagnóstico ya tiene un parto registrado.",
 };
 
 /**
