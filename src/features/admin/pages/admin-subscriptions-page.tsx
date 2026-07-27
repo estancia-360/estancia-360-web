@@ -19,7 +19,7 @@ import { CancelSubscriptionDialog } from "@/features/admin/components/cancel-sub
 import { getAllSubscriptions } from "@/features/admin/api/subscriptions-api";
 import type { RanchSubscription } from "@/features/admin/types/subscriptions";
 import { useAuth } from "@/features/auth/context/use-auth";
-import { ApiError } from "@/lib/api-client";
+import { translateError } from "@/lib/error-messages";
 
 function formatDate(value: string | null): string {
   if (!value) return "—";
@@ -40,7 +40,7 @@ export function AdminSubscriptionsPage() {
     getAllSubscriptions(session.accessToken)
       .then(({ subscriptions }) => setSubscriptions(subscriptions))
       .catch((error) => {
-        toast.error(error instanceof ApiError ? error.message : "No se pudieron cargar las suscripciones.");
+        toast.error(translateError(error, "No se pudieron cargar las suscripciones."));
       })
       .finally(() => setIsLoading(false));
   }, [session]);

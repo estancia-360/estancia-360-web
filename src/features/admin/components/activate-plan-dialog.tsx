@@ -16,7 +16,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { activatePlan, getPlans } from "@/features/admin/api/subscriptions-api";
 import type { BillingCycle, RanchSubscription, SubscriptionPlan } from "@/features/admin/types/subscriptions";
 import { useAuth } from "@/features/auth/context/use-auth";
-import { ApiError } from "@/lib/api-client";
+import { translateError } from "@/lib/error-messages";
 
 interface ActivatePlanDialogProps {
   subscription: RanchSubscription | null;
@@ -80,7 +80,7 @@ export function ActivatePlanDialog({ subscription, onOpenChange, onActivated }: 
       onActivated(result.subscription);
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof ApiError ? error.message : "No se pudo activar el plan.");
+      toast.error(translateError(error, "No se pudo activar el plan."));
     } finally {
       setIsSubmitting(false);
     }

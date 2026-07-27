@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { getMetrics } from "@/features/admin/api/subscriptions-api";
 import type { SubscriptionMetrics } from "@/features/admin/types/subscriptions";
 import { useAuth } from "@/features/auth/context/use-auth";
-import { ApiError } from "@/lib/api-client";
+import { translateError } from "@/lib/error-messages";
 
 const currencyFormatter = new Intl.NumberFormat("es-BO", {
   style: "currency",
@@ -29,8 +29,7 @@ export function AdminMetricsPage() {
         if (!cancelled) setMetrics(result);
       })
       .catch((error) => {
-        const message = error instanceof ApiError ? error.message : "No se pudieron cargar las métricas.";
-        toast.error(message);
+        toast.error(translateError(error, "No se pudieron cargar las métricas."));
       })
       .finally(() => {
         if (!cancelled) setIsLoading(false);

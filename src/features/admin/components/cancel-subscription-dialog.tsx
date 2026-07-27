@@ -13,7 +13,7 @@ import {
 import { cancelSubscription } from "@/features/admin/api/subscriptions-api";
 import type { RanchSubscription } from "@/features/admin/types/subscriptions";
 import { useAuth } from "@/features/auth/context/use-auth";
-import { ApiError } from "@/lib/api-client";
+import { translateError } from "@/lib/error-messages";
 
 interface CancelSubscriptionDialogProps {
   subscription: RanchSubscription | null;
@@ -34,7 +34,7 @@ export function CancelSubscriptionDialog({ subscription, onOpenChange, onCancell
       onCancelled(result.subscription);
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof ApiError ? error.message : "No se pudo cancelar la suscripción.");
+      toast.error(translateError(error, "No se pudo cancelar la suscripción."));
     } finally {
       setIsSubmitting(false);
     }

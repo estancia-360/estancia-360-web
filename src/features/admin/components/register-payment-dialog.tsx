@@ -21,7 +21,7 @@ import { registerPayment } from "@/features/admin/api/subscriptions-api";
 import { registerPaymentSchema, type RegisterPaymentValues } from "@/features/admin/schemas/register-payment-schema";
 import type { RanchSubscription } from "@/features/admin/types/subscriptions";
 import { useAuth } from "@/features/auth/context/use-auth";
-import { ApiError } from "@/lib/api-client";
+import { translateError } from "@/lib/error-messages";
 
 interface RegisterPaymentDialogProps {
   subscription: RanchSubscription | null;
@@ -90,7 +90,7 @@ export function RegisterPaymentDialog({ subscription, onOpenChange, onRegistered
       onRegistered(result.subscription);
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof ApiError ? error.message : "No se pudo registrar el pago.");
+      toast.error(translateError(error, "No se pudo registrar el pago."));
     }
   };
 

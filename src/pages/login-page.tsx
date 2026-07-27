@@ -14,7 +14,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useAuth } from "@/features/auth/context/use-auth";
 import { loginSchema, type LoginValues } from "@/features/auth/schemas/login-schema";
 import { isAdminRole } from "@/features/auth/lib/roles";
-import { ApiError } from "@/lib/api-client";
+import { translateError } from "@/lib/error-messages";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -37,8 +37,7 @@ export function LoginPage() {
       toast.success("Ingreso exitoso");
       navigate(isAdminRole(session.idRole) ? "/admin" : "/dashboard", { replace: true });
     } catch (error) {
-      const message = error instanceof ApiError ? error.message : "No se pudo iniciar sesión. Intentá de nuevo.";
-      setFormError(message);
+      setFormError(translateError(error, "No se pudo iniciar sesión. Intentá de nuevo."));
     }
   };
 
