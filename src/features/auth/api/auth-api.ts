@@ -13,8 +13,11 @@ export interface LoginResponse {
   ranches: OwnedRanch[];
 }
 
+// /auth/login/web — variante del login pensada para el panel: devuelve todas las
+// estancias donde el usuario es Owner (no solo la primera, como /auth/login que
+// usa mobile) para que el panel deje elegir con cuál entrar.
 export function login(email: string, password: string): Promise<LoginResponse> {
-  return apiFetch<LoginResponse>("/auth/login", {
+  return apiFetch<LoginResponse>("/auth/login/web", {
     method: "POST",
     body: { email, password },
   });
