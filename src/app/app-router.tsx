@@ -8,8 +8,10 @@ import { RanchPickerPage } from "@/features/ranch/pages/ranch-picker-page";
 import { RanchOverviewPage } from "@/features/ranch/pages/ranch-overview-page";
 import { RanchTeamPage } from "@/features/ranch/pages/ranch-team-page";
 import { ModuleComingSoon } from "@/features/ranch/components/module-coming-soon";
+import { RequireProductionType } from "@/features/ranch/components/require-production-type";
 import { AnimalsPage } from "@/features/animals/pages/animals-page";
 import { CriaPage } from "@/features/cria/pages/cria-page";
+import { PRODUCTION_TYPE_IDS } from "@/features/subscriptions/types";
 import { AdminLayout } from "@/features/admin/layout/admin-layout";
 import { AdminMetricsPage } from "@/features/admin/pages/admin-metrics-page";
 import { AdminSubscriptionsPage } from "@/features/admin/pages/admin-subscriptions-page";
@@ -45,9 +47,30 @@ export const appRouter = createBrowserRouter([
       { index: true, element: <RanchOverviewPage /> },
       { path: "equipo", element: <RanchTeamPage /> },
       { path: "animales", element: <AnimalsPage /> },
-      { path: "cria", element: <CriaPage /> },
-      { path: "recria", element: <ModuleComingSoon moduleName="Recría" /> },
-      { path: "engorde", element: <ModuleComingSoon moduleName="Engorde" /> },
+      {
+        path: "cria",
+        element: (
+          <RequireProductionType idProductionType={PRODUCTION_TYPE_IDS.CRIA} moduleName="Cría">
+            <CriaPage />
+          </RequireProductionType>
+        ),
+      },
+      {
+        path: "recria",
+        element: (
+          <RequireProductionType idProductionType={PRODUCTION_TYPE_IDS.RECRIA} moduleName="Recría">
+            <ModuleComingSoon moduleName="Recría" />
+          </RequireProductionType>
+        ),
+      },
+      {
+        path: "engorde",
+        element: (
+          <RequireProductionType idProductionType={PRODUCTION_TYPE_IDS.ENGORDE} moduleName="Engorde">
+            <ModuleComingSoon moduleName="Engorde" />
+          </RequireProductionType>
+        ),
+      },
       { path: "sanidad", element: <ModuleComingSoon moduleName="Sanidad" /> },
       { path: "movimientos", element: <ModuleComingSoon moduleName="Movimientos" /> },
     ],

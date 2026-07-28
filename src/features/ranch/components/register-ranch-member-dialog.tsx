@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Users } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -16,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Field, FieldGroup, FieldLabel, FieldError } from "@/components/ui/field";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
+import { ModuleIcon } from "@/components/layout/module-icon";
 import { registerRanchMember } from "@/features/ranch/api/members-api";
 import { registerRanchMemberSchema, type RegisterRanchMemberValues } from "@/features/ranch/schemas/register-ranch-member-schema";
 import { useAuth } from "@/features/auth/context/use-auth";
@@ -72,9 +74,12 @@ export function RegisterRanchMemberDialog({ idRanch, open, onOpenChange, onCreat
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Nuevo miembro del equipo</DialogTitle>
-          <DialogDescription>Se crea la cuenta y queda vinculada a esta estancia con el rol que elijas.</DialogDescription>
+        <DialogHeader className="flex-row items-center gap-3 space-y-0">
+          <ModuleIcon icon={Users} color="blue" size="sm" />
+          <div>
+            <DialogTitle>Nuevo miembro del equipo</DialogTitle>
+            <DialogDescription>Se crea la cuenta y queda vinculada a esta estancia con el rol que elijas.</DialogDescription>
+          </div>
         </DialogHeader>
 
         <form noValidate onSubmit={handleSubmit(onSubmit)}>

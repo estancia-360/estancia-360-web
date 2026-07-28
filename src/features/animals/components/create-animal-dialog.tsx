@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Beef } from "lucide-react";
 import { toast } from "sonner";
 import type { z } from "zod";
 import {
@@ -17,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Field, FieldGroup, FieldLabel, FieldError } from "@/components/ui/field";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
+import { ModuleIcon } from "@/components/layout/module-icon";
 import { createRanchAnimal, getAnimalBreeds, getAnimalClasses, getRanchLots } from "@/features/animals/api/animals-api";
 import { createAnimalSchema, type CreateAnimalValues } from "@/features/animals/schemas/create-animal-schema";
 import { PRODUCTIVE_STATUS_LABELS, type AnimalBreed, type AnimalClass, type RanchLot } from "@/features/animals/types";
@@ -117,9 +119,12 @@ export function CreateAnimalDialog({ idRanch, open, onOpenChange, onCreated }: C
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Nuevo animal</DialogTitle>
-          <DialogDescription>Registrar un animal en la estancia.</DialogDescription>
+        <DialogHeader className="flex-row items-center gap-3 space-y-0">
+          <ModuleIcon icon={Beef} color="green" size="sm" />
+          <div>
+            <DialogTitle>Nuevo animal</DialogTitle>
+            <DialogDescription>Registrar un animal en la estancia.</DialogDescription>
+          </div>
         </DialogHeader>
 
         <form noValidate onSubmit={handleSubmit(onSubmit)}>

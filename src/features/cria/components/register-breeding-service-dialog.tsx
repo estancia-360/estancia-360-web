@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Baby } from "lucide-react";
 import { toast } from "sonner";
 import type { z } from "zod";
 import {
@@ -17,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Field, FieldGroup, FieldLabel, FieldError, FieldDescription } from "@/components/ui/field";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
+import { ModuleIcon } from "@/components/layout/module-icon";
 import { getRanchAnimals } from "@/features/animals/api/animals-api";
 import type { RanchAnimal } from "@/features/animals/types";
 import { registerBreedingService } from "@/features/cria/api/cria-api";
@@ -100,9 +102,12 @@ export function RegisterBreedingServiceDialog({ idRanch, open, onOpenChange, onC
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Nuevo servicio de monta</DialogTitle>
-          <DialogDescription>Primer paso del ciclo reproductivo — después vienen el diagnóstico y el parto.</DialogDescription>
+        <DialogHeader className="flex-row items-center gap-3 space-y-0">
+          <ModuleIcon icon={Baby} color="orange" size="sm" />
+          <div>
+            <DialogTitle>Nuevo servicio de monta</DialogTitle>
+            <DialogDescription>Primer paso del ciclo reproductivo — después vienen el diagnóstico y el parto.</DialogDescription>
+          </div>
         </DialogHeader>
 
         <form noValidate onSubmit={handleSubmit(onSubmit)}>

@@ -42,12 +42,15 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/features/auth/context/use-auth";
 import { useRanchSubscription } from "@/features/subscriptions/context/ranch-subscription-context";
+import { hasProductionType, PRODUCTION_TYPE_IDS } from "@/features/subscriptions/types";
 import { clearSelectedRanchId } from "@/features/ranch/lib/selected-ranch-storage";
 
 // Cada módulo mobile online tiene su lugar reservado acá desde ya — todavía
 // apuntan a la misma página "en construcción" hasta que se implementen uno
 // por uno (mismo orden que el roadmap: Cría, Recría, Engorde, Sanidad,
-// Movimientos).
+// Movimientos). Cría/Recría/Engorde son rubros — solo aparecen si la estancia
+// los tiene contratados (RN-09: nunca Engorde sin Recría, ni Recría sin Cría).
+// Animales, Sanidad y Movimientos no son rubros, siempre aplican.
 const navGroups = [
   {
     label: "General",
@@ -55,15 +58,22 @@ const navGroups = [
   },
   {
     label: "Estancia",
-    items: [{ to: "/dashboard/equipo", label: "Equipo", icon: Users, end: false }],
+    items: [{ to: "/dashboard/equipo", label: "Equipo", icon: Users, end: false, activeClassName: "bg-brand-blue/10 text-brand-blue" }],
   },
   {
     label: "Producción",
     items: [
-      { to: "/dashboard/animales", label: "Animales", icon: Beef, end: false },
-      { to: "/dashboard/cria", label: "Cría", icon: Baby, end: false },
-      { to: "/dashboard/recria", label: "Recría", icon: Sprout, end: false },
-      { to: "/dashboard/engorde", label: "Engorde", icon: UtensilsCrossed, end: false },
+      { to: "/dashboard/animales", label: "Animales", icon: Beef, end: false, activeClassName: "bg-brand-green/10 text-brand-green" },
+      {
+        to: "/dashboard/cria",
+        label: "Cría",
+        icon: Baby,
+        end: false,
+        activeClassName: "bg-brand-orange/15 text-brand-orange-dark",
+        requiresProductionType: PRODUCTION_TYPE_IDS.CRIA,
+      },
+      { to: "/dashboard/recria", label: "Recría", icon: Sprout, end: false, requiresProductionType: PRODUCTION_TYPE_IDS.RECRIA },
+      { to: "/dashboard/engorde", label: "Engorde", icon: UtensilsCrossed, end: false, requiresProductionType: PRODUCTION_TYPE_IDS.ENGORDE },
       { to: "/dashboard/sanidad", label: "Sanidad", icon: Stethoscope, end: false },
       { to: "/dashboard/movimientos", label: "Movimientos", icon: ArrowLeftRight, end: false },
     ],
@@ -101,32 +111,40 @@ export function RanchLayout() {
         </SidebarHeader>
 
         <SidebarContent>
-          {navGroups.map((group) => (
-            <SidebarGroup key={group.label}>
-              <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {group.items.map((item) => (
-                    <SidebarMenuItem key={item.to}>
-                      <SidebarMenuButton
-                        tooltip={item.label}
-                        render={
-                          <NavLink
-                            to={item.to}
-                            end={item.end}
-                            className={({ isActive }) => cn(isActive && "bg-sidebar-accent text-sidebar-accent-foreground")}
-                          />
-                        }
-                      >
-                        <item.icon />
-                        <span>{item.label}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          ))}
+          {navGroups.map((group) => {
+            const items = group.items.filter(
+              (item) => item.requiresProductionType === undefined || hasProductionType(subscription.ranch, item.requiresProductionType),
+            );
+            if (items.length === 0) return null;
+            return (
+              <SidebarGroup key={group.label}>
+                <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {items.map((item) => (
+                      <SidebarMenuItem key={item.to}>
+                        <SidebarMenuButton
+                          tooltip={item.label}
+                          render={
+                            <NavLink
+                              to={item.to}
+                              end={item.end}
+                              className={({ isActive }) =>
+                                cn(isActive && (item.activeClassName ?? "bg-sidebar-accent text-sidebar-accent-foreground"))
+                              }
+                            />
+                          }
+                        >
+                          <item.icon />
+                          <span>{item.label}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            );
+          })}
         </SidebarContent>
 
         <SidebarFooter>
