@@ -12,6 +12,7 @@ import { ModuleComingSoon } from "@/features/ranch/components/module-coming-soon
 import { RequireProductionType } from "@/features/ranch/components/require-production-type";
 import { AnimalsPage } from "@/features/animals/pages/animals-page";
 import { CriaPage } from "@/features/cria/pages/cria-page";
+import { RearingPage } from "@/features/rearing/pages/rearing-page";
 import { PRODUCTION_TYPE_IDS } from "@/features/subscriptions/types";
 import { AdminLayout } from "@/features/admin/layout/admin-layout";
 import { AdminMetricsPage } from "@/features/admin/pages/admin-metrics-page";
@@ -61,7 +62,7 @@ export const appRouter = createBrowserRouter([
         path: "recria",
         element: (
           <RequireProductionType idProductionType={PRODUCTION_TYPE_IDS.RECRIA} moduleName="Recría">
-            <ModuleComingSoon moduleName="Recría" />
+            <RearingPage />
           </RequireProductionType>
         ),
       },

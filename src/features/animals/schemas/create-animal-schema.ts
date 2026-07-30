@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { optionalNumber } from "@/lib/zod-helpers";
 
 export const createAnimalSchema = z.object({
   code: z.string().min(1, "El código es obligatorio").max(50, "El código es demasiado largo"),
@@ -8,7 +9,7 @@ export const createAnimalSchema = z.object({
   birthdate: z.string().min(1, "La fecha de nacimiento es obligatoria"),
   idProductiveStatus: z.coerce.number().int().positive("Elegí una etapa productiva"),
   idLot: z.coerce.number().int().positive().optional(),
-  weight: z.coerce.number().positive("El peso debe ser mayor a 0").optional(),
+  weight: optionalNumber(z.number().positive("El peso debe ser mayor a 0")),
   origin: z.string().optional(),
   codeMother: z.string().optional(),
   codeFather: z.string().optional(),

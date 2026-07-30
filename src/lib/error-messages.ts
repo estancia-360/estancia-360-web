@@ -48,6 +48,12 @@ const ERROR_MESSAGES: Record<string, string> = {
   INVALID_PRODUCTION_TYPES_COMBINATION:
     "Combinación de rubros inválida. El orden es Cría → Recría → Engorde, sin saltos: Cría sola, Cría+Recría, o los 3.",
   RANCH_PRODUCTION_TYPE_NOT_ENABLED: "Tu estancia no tiene ese rubro habilitado.",
+
+  // Recría
+  WEIGHT_RECORD_NOT_FOUND: "No se encontró el registro de pesaje.",
+  ANIMAL_IS_BAJA: "Este animal está dado de baja — no puede recibir más eventos.",
+  ANIMAL_NOT_IN_REARING: "Este animal no está en la etapa de Recría.",
+  REARING_SELECTION_NOT_FOUND: "No se encontró la selección de destino.",
 };
 
 /**

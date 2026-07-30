@@ -6,8 +6,13 @@ interface PaginatedResponse<T> {
   meta: { page: number; limit: number; total: number; pages: number };
 }
 
-export function getRanchAnimals(idRanch: number, page: number, accessToken: string): Promise<PaginatedResponse<RanchAnimal>> {
-  return apiFetch(`/ranch-animals/${idRanch}?page=${page}&limit=20`, { accessToken });
+export function getRanchAnimals(
+  idRanch: number,
+  page: number,
+  accessToken: string,
+  limit = 20,
+): Promise<PaginatedResponse<RanchAnimal>> {
+  return apiFetch(`/ranch-animals/${idRanch}?page=${page}&limit=${limit}`, { accessToken });
 }
 
 export function getAnimalClasses(accessToken: string): Promise<AnimalClass[]> {

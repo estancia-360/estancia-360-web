@@ -43,3 +43,10 @@ export const PRODUCTIVE_STATUS_LABELS: Record<number, string> = {
   3: "Engorde",
   4: "Baja",
 };
+
+export const PRODUCTIVE_STATUS_IDS = {
+  CRIA: 1,
+  RECRIA: 2,
+  ENGORDE: 3,
+  BAJA: 4,
+} as const;
