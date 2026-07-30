@@ -34,9 +34,14 @@ const ERROR_MESSAGES: Record<string, string> = {
 
   // Cría
   ANIMAL_ALREADY_PREGNANT: "Este animal ya tiene un diagnóstico de preñez activo — no puede recibir un nuevo servicio hasta que termine ese ciclo.",
+  BREEDING_SERVICE_NOT_FOUND: "No se encontró el servicio de monta.",
   GESTATION_DIAGNOSIS_NOT_FOUND: "No se encontró el diagnóstico de gestación.",
   DIAGNOSIS_NOT_PREGNANT: "Ese diagnóstico no confirma preñez — no se puede registrar un parto a partir de él.",
   PARTURITION_ALREADY_EXISTS: "Ese diagnóstico ya tiene un parto registrado.",
+  PARTURITION_NOT_FOUND: "No se encontró el parto.",
+  LOT_NOT_REARING_TYPE: "El lote de destino tiene que ser de tipo Recría.",
+  WEANING_NOT_FOUND: "No se encontró el destete.",
+  RANCH_ANIMAL_NOT_FOUND: "No se encontró el animal.",
 
   // Potreros y lotes
   RANCH_PASTURE_NOT_FOUND: "No se encontró el potrero.",
