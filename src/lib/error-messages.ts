@@ -63,6 +63,27 @@ const ERROR_MESSAGES: Record<string, string> = {
   // Engorde
   FATTENING_ENTRY_NOT_FOUND: "No se encontró el ingreso a engorde.",
   FEED_RECORD_NOT_FOUND: "No se encontró el registro de alimentación.",
+
+  // Movimientos
+  MOVEMENT_NOT_FOUND: "No se encontró el movimiento.",
+  MOVEMENT_ANIMAL_NOT_FOUND: "No se encontró el animal dentro de este movimiento.",
+  ANIMAL_EXIT_NOT_FOUND: "No se encontró la baja.",
+  RANCH_ACCESS_DENIED: "No pertenecés a esta estancia.",
+  ONLY_OWNER_ALLOWED: "Solo el dueño de la estancia puede registrar esto.",
+  PURCHASE_REQUIRES_NEW_ANIMAL: "Faltan los datos del animal a comprar.",
+  ID_RANCH_ANIMAL_REQUIRED: "Falta elegir el animal.",
+  ID_LOT_DEST_REQUIRED: "Falta elegir el lote de destino.",
+  COUNTERPART_NAME_REQUIRED: "Falta el nombre de la contraparte.",
+  DUPLICATED_ANIMAL_IN_MOVEMENT: "Hay un animal repetido en la lista.",
+  ANIMAL_NOT_IN_RANCH: "Ese animal no pertenece a esta estancia.",
+  ANIMAL_IN_PENDING_MOVEMENT: "Ese animal ya tiene un movimiento pendiente.",
+  ANIMAL_UNDER_WITHDRAWAL: "Ese animal está en período de retiro por un tratamiento — no se puede vender todavía.",
+  DUPLICATED_ANIMAL_CODE: "Ya existe un animal con ese código en la estancia.",
+  MOVEMENT_NOT_CONFIRMABLE: "Este movimiento no admite confirmación por animal.",
+  MOVEMENT_CANCELLED: "Este movimiento ya fue cancelado.",
+  INVALID_STATUS_TRANSITION: "Ese cambio de estado no es válido.",
+  MOVEMENT_ALREADY_CONFIRMED: "Este movimiento ya está confirmado — no se puede cancelar.",
+  NOTES_REQUIRED_FOR_OTHER: "Contá el motivo en notas cuando elegís \"Otro\".",
 };
 
 /**

@@ -14,6 +14,7 @@ import { AnimalsPage } from "@/features/animals/pages/animals-page";
 import { CriaPage } from "@/features/cria/pages/cria-page";
 import { RearingPage } from "@/features/rearing/pages/rearing-page";
 import { FatteningPage } from "@/features/fattening/pages/fattening-page";
+import { MovementsPage } from "@/features/movements/pages/movements-page";
 import { PRODUCTION_TYPE_IDS } from "@/features/subscriptions/types";
 import { AdminLayout } from "@/features/admin/layout/admin-layout";
 import { AdminMetricsPage } from "@/features/admin/pages/admin-metrics-page";
@@ -76,7 +77,7 @@ export const appRouter = createBrowserRouter([
         ),
       },
       { path: "sanidad", element: <ModuleComingSoon moduleName="Sanidad" /> },
-      { path: "movimientos", element: <ModuleComingSoon moduleName="Movimientos" /> },
+      { path: "movimientos", element: <MovementsPage /> },
     ],
   },
   {

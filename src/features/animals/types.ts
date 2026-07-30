@@ -50,3 +50,11 @@ export const PRODUCTIVE_STATUS_IDS = {
   ENGORDE: 3,
   BAJA: 4,
 } as const;
+
+export const ANIMAL_STATUS_IDS = {
+  ACTIVE: 1,
+  OBSERVATION: 2,
+  INACTIVE: 3,
+  PENDING_MOVEMENT: 4,
+  SOLD: 5,
+} as const;

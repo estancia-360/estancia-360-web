@@ -99,7 +99,13 @@ const navGroups = [
         requiresProductionType: PRODUCTION_TYPE_IDS.ENGORDE,
       },
       { to: "/dashboard/sanidad", label: "Sanidad", icon: Stethoscope, end: false },
-      { to: "/dashboard/movimientos", label: "Movimientos", icon: ArrowLeftRight, end: false },
+      {
+        to: "/dashboard/movimientos",
+        label: "Movimientos",
+        icon: ArrowLeftRight,
+        end: false,
+        activeClassName: "bg-brand-orange/15 text-brand-orange-dark",
+      },
     ],
   },
 ];
