@@ -7,6 +7,7 @@ import { RanchLayout } from "@/features/ranch/layout/ranch-layout";
 import { RanchPickerPage } from "@/features/ranch/pages/ranch-picker-page";
 import { RanchOverviewPage } from "@/features/ranch/pages/ranch-overview-page";
 import { RanchTeamPage } from "@/features/ranch/pages/ranch-team-page";
+import { PasturesPage } from "@/features/pastures/pages/pastures-page";
 import { ModuleComingSoon } from "@/features/ranch/components/module-coming-soon";
 import { RequireProductionType } from "@/features/ranch/components/require-production-type";
 import { AnimalsPage } from "@/features/animals/pages/animals-page";
@@ -46,6 +47,7 @@ export const appRouter = createBrowserRouter([
     children: [
       { index: true, element: <RanchOverviewPage /> },
       { path: "equipo", element: <RanchTeamPage /> },
+      { path: "potreros", element: <PasturesPage /> },
       { path: "animales", element: <AnimalsPage /> },
       {
         path: "cria",

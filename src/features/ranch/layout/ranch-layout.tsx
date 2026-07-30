@@ -11,6 +11,7 @@ import {
   User,
   Users,
   Repeat,
+  Fence,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BrandLogo } from "@/features/landing/components/brand-logo";
@@ -58,7 +59,16 @@ const navGroups = [
   },
   {
     label: "Estancia",
-    items: [{ to: "/dashboard/equipo", label: "Equipo", icon: Users, end: false, activeClassName: "bg-brand-blue/10 text-brand-blue" }],
+    items: [
+      { to: "/dashboard/equipo", label: "Equipo", icon: Users, end: false, activeClassName: "bg-brand-blue/10 text-brand-blue" },
+      {
+        to: "/dashboard/potreros",
+        label: "Potreros y Lotes",
+        icon: Fence,
+        end: false,
+        activeClassName: "bg-brand-accent/15 text-brand-green-dark",
+      },
+    ],
   },
   {
     label: "Producción",

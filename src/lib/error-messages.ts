@@ -37,6 +37,17 @@ const ERROR_MESSAGES: Record<string, string> = {
   GESTATION_DIAGNOSIS_NOT_FOUND: "No se encontró el diagnóstico de gestación.",
   DIAGNOSIS_NOT_PREGNANT: "Ese diagnóstico no confirma preñez — no se puede registrar un parto a partir de él.",
   PARTURITION_ALREADY_EXISTS: "Ese diagnóstico ya tiene un parto registrado.",
+
+  // Potreros y lotes
+  RANCH_PASTURE_NOT_FOUND: "No se encontró el potrero.",
+  RANCH_PASTURE_HAS_LOTS: "No se puede eliminar: el potrero todavía tiene lotes. Eliminá o movés los lotes primero.",
+  RANCH_LOT_NOT_FOUND: "No se encontró el lote.",
+  RANCH_LOT_HAS_ANIMALS: "No se puede eliminar: el lote todavía tiene animales. Movelos a otro lote primero.",
+
+  // Rubros (RN-09)
+  INVALID_PRODUCTION_TYPES_COMBINATION:
+    "Combinación de rubros inválida. El orden es Cría → Recría → Engorde, sin saltos: Cría sola, Cría+Recría, o los 3.",
+  RANCH_PRODUCTION_TYPE_NOT_ENABLED: "Tu estancia no tiene ese rubro habilitado.",
 };
 
 /**

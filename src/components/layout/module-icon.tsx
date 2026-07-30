@@ -5,6 +5,7 @@ const COLOR_STYLES = {
   green: "bg-brand-green/10 text-brand-green",
   orange: "bg-brand-orange/10 text-brand-orange-dark",
   blue: "bg-brand-blue/10 text-brand-blue",
+  accent: "bg-brand-accent/15 text-brand-green-dark",
 } as const;
 
 type ModuleColor = keyof typeof COLOR_STYLES;
