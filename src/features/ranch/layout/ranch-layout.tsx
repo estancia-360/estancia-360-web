@@ -52,7 +52,16 @@ import { clearSelectedRanchId } from "@/features/ranch/lib/selected-ranch-storag
 // Movimientos). Cría/Recría/Engorde son rubros — solo aparecen si la estancia
 // los tiene contratados (RN-09: nunca Engorde sin Recría, ni Recría sin Cría).
 // Animales, Sanidad y Movimientos no son rubros, siempre aplican.
-const navGroups = [
+interface NavItem {
+  to: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  end: boolean;
+  activeClassName?: string;
+  requiresProductionType?: number;
+}
+
+const navGroups: { label: string; items: NavItem[] }[] = [
   {
     label: "General",
     items: [{ to: "/dashboard", label: "Resumen", icon: LayoutDashboard, end: true }],
@@ -98,7 +107,13 @@ const navGroups = [
         activeClassName: "bg-brand-green/10 text-brand-green",
         requiresProductionType: PRODUCTION_TYPE_IDS.ENGORDE,
       },
-      { to: "/dashboard/sanidad", label: "Sanidad", icon: Stethoscope, end: false },
+      {
+        to: "/dashboard/sanidad",
+        label: "Sanidad",
+        icon: Stethoscope,
+        end: false,
+        activeClassName: "bg-brand-blue/10 text-brand-blue",
+      },
       {
         to: "/dashboard/movimientos",
         label: "Movimientos",

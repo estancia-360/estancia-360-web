@@ -8,13 +8,13 @@ import { RanchPickerPage } from "@/features/ranch/pages/ranch-picker-page";
 import { RanchOverviewPage } from "@/features/ranch/pages/ranch-overview-page";
 import { RanchTeamPage } from "@/features/ranch/pages/ranch-team-page";
 import { PasturesPage } from "@/features/pastures/pages/pastures-page";
-import { ModuleComingSoon } from "@/features/ranch/components/module-coming-soon";
 import { RequireProductionType } from "@/features/ranch/components/require-production-type";
 import { AnimalsPage } from "@/features/animals/pages/animals-page";
 import { CriaPage } from "@/features/cria/pages/cria-page";
 import { RearingPage } from "@/features/rearing/pages/rearing-page";
 import { FatteningPage } from "@/features/fattening/pages/fattening-page";
 import { MovementsPage } from "@/features/movements/pages/movements-page";
+import { HealthPage } from "@/features/health/pages/health-page";
 import { PRODUCTION_TYPE_IDS } from "@/features/subscriptions/types";
 import { AdminLayout } from "@/features/admin/layout/admin-layout";
 import { AdminMetricsPage } from "@/features/admin/pages/admin-metrics-page";
@@ -76,7 +76,7 @@ export const appRouter = createBrowserRouter([
           </RequireProductionType>
         ),
       },
-      { path: "sanidad", element: <ModuleComingSoon moduleName="Sanidad" /> },
+      { path: "sanidad", element: <HealthPage /> },
       { path: "movimientos", element: <MovementsPage /> },
     ],
   },

@@ -84,6 +84,11 @@ const ERROR_MESSAGES: Record<string, string> = {
   INVALID_STATUS_TRANSITION: "Ese cambio de estado no es válido.",
   MOVEMENT_ALREADY_CONFIRMED: "Este movimiento ya está confirmado — no se puede cancelar.",
   NOTES_REQUIRED_FOR_OTHER: "Contá el motivo en notas cuando elegís \"Otro\".",
+
+  // Sanidad
+  VACCINATION_NOT_FOUND: "No se encontró la vacunación.",
+  TREATMENT_NOT_FOUND: "No se encontró el tratamiento.",
+  HEALTH_INCIDENT_NOT_FOUND: "No se encontró el incidente sanitario.",
 };
 
 /**
