@@ -59,6 +59,10 @@ const ERROR_MESSAGES: Record<string, string> = {
   ANIMAL_IS_BAJA: "Este animal está dado de baja — no puede recibir más eventos.",
   ANIMAL_NOT_IN_REARING: "Este animal no está en la etapa de Recría.",
   REARING_SELECTION_NOT_FOUND: "No se encontró la selección de destino.",
+
+  // Engorde
+  FATTENING_ENTRY_NOT_FOUND: "No se encontró el ingreso a engorde.",
+  FEED_RECORD_NOT_FOUND: "No se encontró el registro de alimentación.",
 };
 
 /**
