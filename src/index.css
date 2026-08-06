@@ -43,8 +43,6 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: var(--color-brand-cream);
-  color: var(--color-brand-text);
 }
 
 @keyframes float-up {
@@ -118,8 +116,8 @@ body {
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: var(--color-brand-cream);
+  --foreground: var(--color-brand-text);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -153,37 +151,60 @@ body {
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
+  /* Colores de marca — mismos roles que :root, ajustados para contraste sobre fondo oscuro
+     (no un flip automático: cada hue se aclara/satura, mismo criterio que la skill dataviz
+     aplica a los gráficos). brand-cream y brand-text invierten roles con sus propios extremos
+     ya-casi-blanco/casi-negro del modo claro.
+
+     Las superficies (fondo/card/sidebar/muted/accent) usan una MISMA familia neutra con apenas
+     un matiz verde — no azul navy — para que el verde (color primario de la marca) sea el que
+     hace de acento, no el fondo. Antes el sidebar quedaba en gris puro (oklch sin matiz) contra
+     un fondo azulado — de ahí el contraste raro; ahora las dos superficies comparten familia. */
+  --color-brand-green: #4f9a56;
+  --color-brand-green-dark: #3d8044;
+  --color-brand-green-light: #7fc986;
+  --color-brand-orange: #f0934f;
+  --color-brand-orange-dark: #e2772a;
+  --color-brand-blue: #9fb3dc;
+  --color-brand-blue-mid: #7d94c4;
+  --color-brand-cream: #141a16;
+  --color-brand-cream-dark: #1c231e;
+  --color-brand-accent: #9ec168;
+  --color-brand-text: #f3f1e8;
+  --color-brand-text-mid: #c9c6ba;
+  --color-brand-text-muted: #8f95a3;
+
+  --background: var(--color-brand-cream);
+  --foreground: var(--color-brand-text);
+  --card: #1b221d;
+  --card-foreground: var(--color-brand-text);
+  --popover: #1b221d;
+  --popover-foreground: var(--color-brand-text);
+  --primary: var(--color-brand-green);
+  --primary-foreground: oklch(0.145 0 0);
+  --secondary: #212a24;
+  --secondary-foreground: var(--color-brand-blue);
+  --muted: #212a24;
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --accent: #212a24;
+  --accent-foreground: var(--color-brand-blue);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: var(--color-brand-green);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar: #171d19;
+  --sidebar-foreground: var(--color-brand-text);
+  --sidebar-primary: var(--color-brand-green);
+  --sidebar-primary-foreground: var(--color-brand-text);
+  --sidebar-accent: #212a24;
+  --sidebar-accent-foreground: var(--color-brand-text);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: var(--color-brand-green);
 }
 
 @layer base {

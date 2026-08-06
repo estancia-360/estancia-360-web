@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { RefreshCcw, ArrowLeftRight, PlusCircle, DollarSign, ShoppingCart, LogOut, Skull, ChevronRight, ChevronLeft } from "lucide-react";
+import { RefreshCcw, ArrowLeftRight, PlusCircle, DollarSign, ShoppingCart, LogOut, Skull } from "lucide-react";
 import { motion } from "motion/react";
 import { toast } from "sonner";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardAction } from "@/components/ui/card";
@@ -17,6 +17,7 @@ import {
 import { FadeIn } from "@/components/layout/fade-in";
 import { StatTile } from "@/components/layout/stat-tile";
 import { ModuleIcon } from "@/components/layout/module-icon";
+import { PaginationControls } from "@/components/layout/pagination-controls";
 import { SaleDialog } from "@/features/movements/components/sale-dialog";
 import { PurchaseDialog } from "@/features/movements/components/purchase-dialog";
 import { TransferDialog } from "@/features/movements/components/transfer-dialog";
@@ -213,23 +214,7 @@ export function MovementsPage() {
                   </TableBody>
                 </Table>
 
-                {meta.pages > 1 ? (
-                  <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
-                    <span>
-                      Página {meta.page} de {meta.pages}
-                    </span>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-                        <ChevronLeft data-icon="inline-start" />
-                        Anterior
-                      </Button>
-                      <Button variant="outline" size="sm" disabled={page >= meta.pages} onClick={() => setPage((p) => p + 1)}>
-                        Siguiente
-                        <ChevronRight data-icon="inline-end" />
-                      </Button>
-                    </div>
-                  </div>
-                ) : null}
+                <PaginationControls page={meta.page} pages={meta.pages} onPageChange={setPage} />
               </>
             )}
           </CardContent>

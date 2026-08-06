@@ -10,6 +10,7 @@ import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/
 import { FadeIn } from "@/components/layout/fade-in";
 import { StatTile } from "@/components/layout/stat-tile";
 import { ModuleIcon } from "@/components/layout/module-icon";
+import { PaginationControls } from "@/components/layout/pagination-controls";
 import { WeightRecordDialog } from "@/features/rearing/components/weight-record-dialog";
 import { RearingSelectionDialog } from "@/features/rearing/components/rearing-selection-dialog";
 import { getRanchAnimals } from "@/features/animals/api/animals-api";
@@ -26,6 +27,8 @@ export function RearingPage() {
   const ranchId = ranch.id;
 
   const [animals, setAnimals] = useState<RanchAnimal[]>([]);
+  const [page, setPage] = useState(1);
+  const [meta, setMeta] = useState({ page: 1, limit: 20, total: 0, pages: 1 });
   const [isLoading, setIsLoading] = useState(true);
 
   const [weightAnimal, setWeightAnimal] = useState<RanchAnimal | null>(null);
@@ -33,11 +36,14 @@ export function RearingPage() {
 
   const load = useCallback(() => {
     if (!session) return;
-    getRanchAnimals(ranchId, 1, session.accessToken, 200)
-      .then((res) => setAnimals(res.data.filter((a) => a.idProductiveStatus === PRODUCTIVE_STATUS_IDS.RECRIA)))
+    getRanchAnimals(ranchId, page, session.accessToken, 20, { idProductiveStatus: PRODUCTIVE_STATUS_IDS.RECRIA })
+      .then((res) => {
+        setAnimals(res.data);
+        setMeta(res.meta);
+      })
       .catch((error) => toast.error(translateError(error, "No se pudieron cargar los animales.")))
       .finally(() => setIsLoading(false));
-  }, [session, ranchId]);
+  }, [session, ranchId, page]);
 
   useEffect(() => {
     load();
@@ -65,7 +71,7 @@ export function RearingPage() {
       </FadeIn>
 
       {!isLoading ? (
-        <StatTile icon={Sprout} color="blue" label="Animales en recría" value={animals.length} className="max-w-xs" />
+        <StatTile icon={Sprout} color="blue" label="Animales en recría" value={meta.total} className="max-w-xs" />
       ) : null}
 
       <FadeIn delay={100}>
@@ -73,7 +79,7 @@ export function RearingPage() {
           <CardHeader>
             <CardTitle>Animales en recría</CardTitle>
             <CardDescription>
-              {animals.length} {animals.length === 1 ? "animal" : "animales"}
+              {meta.total} {meta.total === 1 ? "animal" : "animales"}
             </CardDescription>
             <CardAction />
           </CardHeader>
@@ -144,6 +150,7 @@ export function RearingPage() {
                 </TableBody>
               </Table>
             )}
+            <PaginationControls page={meta.page} pages={meta.pages} onPageChange={setPage} />
           </CardContent>
         </Card>
       </FadeIn>

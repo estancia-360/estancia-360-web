@@ -27,6 +27,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { useAuth } from "@/features/auth/context/use-auth";
 
 const navGroups = [
@@ -120,8 +121,9 @@ export function AdminLayout() {
       </Sidebar>
 
       <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4">
+        <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-border px-4">
           <SidebarTrigger />
+          <ThemeToggle />
         </header>
         <div className="flex flex-1 flex-col gap-6 bg-brand-cream/40 p-6">
           <Outlet />

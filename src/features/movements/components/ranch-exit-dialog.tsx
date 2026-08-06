@@ -67,7 +67,6 @@ export function RanchExitDialog({ idRanch, open, onOpenChange, onCreated }: Ranc
       await registerMovement(
         {
           idRanch,
-          idUser: session.idUser,
           movementType: "ranch_exit",
           movementDate: new Date(values.movementDate).toISOString(),
           counterpartName: values.counterpartName,

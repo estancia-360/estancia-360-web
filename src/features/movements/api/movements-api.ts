@@ -28,7 +28,6 @@ interface RegisterMovementAnimalInput {
 
 export interface RegisterMovementInput {
   idRanch: number;
-  idUser: number;
   movementType: MovementType;
   movementDate: string;
   counterpartName?: string;

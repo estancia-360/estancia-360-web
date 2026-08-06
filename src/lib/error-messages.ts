@@ -89,6 +89,9 @@ const ERROR_MESSAGES: Record<string, string> = {
   VACCINATION_NOT_FOUND: "No se encontró la vacunación.",
   TREATMENT_NOT_FOUND: "No se encontró el tratamiento.",
   HEALTH_INCIDENT_NOT_FOUND: "No se encontró el incidente sanitario.",
+
+  // Dashboard
+  PERMISSION_DENIED: "No tenés permiso para ver esto.",
 };
 
 /**

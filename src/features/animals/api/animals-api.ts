@@ -6,13 +6,24 @@ interface PaginatedResponse<T> {
   meta: { page: number; limit: number; total: number; pages: number };
 }
 
+export interface RanchAnimalsFilters {
+  idProductiveStatus?: number;
+  excludeProductiveStatus?: number;
+  idStatus?: number;
+}
+
 export function getRanchAnimals(
   idRanch: number,
   page: number,
   accessToken: string,
   limit = 20,
+  filters?: RanchAnimalsFilters,
 ): Promise<PaginatedResponse<RanchAnimal>> {
-  return apiFetch(`/ranch-animals/${idRanch}?page=${page}&limit=${limit}`, { accessToken });
+  const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+  if (filters?.idProductiveStatus) params.set("idProductiveStatus", String(filters.idProductiveStatus));
+  if (filters?.excludeProductiveStatus) params.set("excludeProductiveStatus", String(filters.excludeProductiveStatus));
+  if (filters?.idStatus) params.set("idStatus", String(filters.idStatus));
+  return apiFetch(`/ranch-animals/${idRanch}?${params.toString()}`, { accessToken });
 }
 
 export function getAnimalClasses(accessToken: string): Promise<AnimalClass[]> {

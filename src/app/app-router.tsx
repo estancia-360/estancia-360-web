@@ -15,6 +15,7 @@ import { RearingPage } from "@/features/rearing/pages/rearing-page";
 import { FatteningPage } from "@/features/fattening/pages/fattening-page";
 import { MovementsPage } from "@/features/movements/pages/movements-page";
 import { HealthPage } from "@/features/health/pages/health-page";
+import { DashboardPage } from "@/features/dashboard/pages/dashboard-page";
 import { PRODUCTION_TYPE_IDS } from "@/features/subscriptions/types";
 import { AdminLayout } from "@/features/admin/layout/admin-layout";
 import { AdminMetricsPage } from "@/features/admin/pages/admin-metrics-page";
@@ -49,6 +50,7 @@ export const appRouter = createBrowserRouter([
     ),
     children: [
       { index: true, element: <RanchOverviewPage /> },
+      { path: "estadisticas", element: <DashboardPage /> },
       { path: "equipo", element: <RanchTeamPage /> },
       { path: "potreros", element: <PasturesPage /> },
       { path: "animales", element: <AnimalsPage /> },

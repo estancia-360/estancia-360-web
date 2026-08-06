@@ -73,7 +73,6 @@ export function TransferDialog({ idRanch, open, onOpenChange, onCreated }: Trans
       await registerMovement(
         {
           idRanch,
-          idUser: session.idUser,
           movementType: "pasture_transfer",
           movementDate: new Date(values.movementDate).toISOString(),
           notes: values.notes || undefined,

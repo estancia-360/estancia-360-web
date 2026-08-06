@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LogIn } from "lucide-react";
 import { toast } from "sonner";
 import { Container } from "@/components/layout/container";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { BrandLogo, BrandWordmark } from "@/features/landing/components/brand-logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,14 +43,15 @@ export function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-brand-cream px-5 py-16">
+    <main className="relative flex min-h-screen items-center justify-center bg-brand-cream px-5 py-16">
+      <ThemeToggle className="absolute top-5 right-5" />
       <Container className="flex max-w-md flex-col items-center">
         <a href="/" className="mb-8 flex items-center gap-2.5" aria-label="Estancia360 inicio">
           <BrandLogo />
           <BrandWordmark />
         </a>
 
-        <div className="w-full rounded-[24px] border border-brand-blue/6 bg-white p-7 shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:p-9">
+        <div className="w-full rounded-[24px] border border-brand-blue/6 bg-card p-7 shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:p-9">
           <div className="mb-6 flex flex-col gap-1.5 text-center">
             <h1 className="font-heading text-xl font-bold text-brand-blue">Ingresar</h1>
             <p className="text-sm text-brand-text-muted">Accedé con tu cuenta de Estancia360</p>

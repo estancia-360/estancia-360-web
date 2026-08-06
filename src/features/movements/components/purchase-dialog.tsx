@@ -83,7 +83,6 @@ export function PurchaseDialog({ idRanch, open, onOpenChange, onCreated }: Purch
       await registerMovement(
         {
           idRanch,
-          idUser: session.idUser,
           movementType: "purchase",
           movementDate: new Date(values.movementDate).toISOString(),
           originName: values.originName || undefined,
