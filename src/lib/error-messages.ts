@@ -89,6 +89,9 @@ const ERROR_MESSAGES: Record<string, string> = {
   VACCINATION_NOT_FOUND: "No se encontró la vacunación.",
   TREATMENT_NOT_FOUND: "No se encontró el tratamiento.",
   HEALTH_INCIDENT_NOT_FOUND: "No se encontró el incidente sanitario.",
+
+  // Cargas masivas
+  BULK_IMPORT_EMPTY: "El archivo no tiene ninguna fila válida para importar.",
 };
 
 /**

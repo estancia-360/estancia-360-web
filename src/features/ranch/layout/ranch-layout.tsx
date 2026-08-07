@@ -12,6 +12,7 @@ import {
   Users,
   Repeat,
   Fence,
+  UploadCloud,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BrandLogo } from "@/features/landing/components/brand-logo";
@@ -120,6 +121,13 @@ const navGroups: { label: string; items: NavItem[] }[] = [
         icon: ArrowLeftRight,
         end: false,
         activeClassName: "bg-brand-orange/15 text-brand-orange-dark",
+      },
+      {
+        to: "/dashboard/cargas-masivas",
+        label: "Cargas Masivas",
+        icon: UploadCloud,
+        end: false,
+        activeClassName: "bg-brand-blue/10 text-brand-blue",
       },
     ],
   },

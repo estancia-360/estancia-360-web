@@ -20,6 +20,12 @@ import { AdminLayout } from "@/features/admin/layout/admin-layout";
 import { AdminMetricsPage } from "@/features/admin/pages/admin-metrics-page";
 import { AdminSubscriptionsPage } from "@/features/admin/pages/admin-subscriptions-page";
 import { AdminUsersPage } from "@/features/admin/pages/admin-users-page";
+import { BulkImportMenuPage } from "@/features/bulk-import/pages/bulk-import-menu-page";
+import { AnimalsImportPage } from "@/features/bulk-import/pages/animals-import-page";
+import { WeightsImportPage } from "@/features/bulk-import/pages/weights-import-page";
+import { GestationImportPage } from "@/features/bulk-import/pages/gestation-import-page";
+import { HealthImportPage } from "@/features/bulk-import/pages/health-import-page";
+import { MovementsImportPage } from "@/features/bulk-import/pages/movements-import-page";
 
 export const appRouter = createBrowserRouter([
   {
@@ -78,6 +84,24 @@ export const appRouter = createBrowserRouter([
       },
       { path: "sanidad", element: <HealthPage /> },
       { path: "movimientos", element: <MovementsPage /> },
+      {
+        path: "cargas-masivas",
+        children: [
+          { index: true, element: <BulkImportMenuPage /> },
+          { path: "animales", element: <AnimalsImportPage /> },
+          { path: "pesajes", element: <WeightsImportPage /> },
+          {
+            path: "gestacion",
+            element: (
+              <RequireProductionType idProductionType={PRODUCTION_TYPE_IDS.CRIA} moduleName="Cría">
+                <GestationImportPage />
+              </RequireProductionType>
+            ),
+          },
+          { path: "sanidad", element: <HealthImportPage /> },
+          { path: "movimientos", element: <MovementsImportPage /> },
+        ],
+      },
     ],
   },
   {
