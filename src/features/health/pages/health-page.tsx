@@ -11,6 +11,7 @@ import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/
 import { FadeIn } from "@/components/layout/fade-in";
 import { StatTile } from "@/components/layout/stat-tile";
 import { ModuleIcon } from "@/components/layout/module-icon";
+import { PaginationControls } from "@/components/layout/pagination-controls";
 import { VaccinationDialog } from "@/features/health/components/vaccination-dialog";
 import { TreatmentDialog } from "@/features/health/components/treatment-dialog";
 import { HealthIncidentDialog } from "@/features/health/components/health-incident-dialog";
@@ -28,6 +29,9 @@ export function HealthPage() {
   const ranchId = ranch.id;
 
   const [animals, setAnimals] = useState<RanchAnimal[]>([]);
+  const [page, setPage] = useState(1);
+  const [meta, setMeta] = useState({ page: 1, limit: 20, total: 0, pages: 1 });
+  const [inObservation, setInObservation] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   const [vaccinationAnimal, setVaccinationAnimal] = useState<RanchAnimal | null>(null);
@@ -36,11 +40,20 @@ export function HealthPage() {
 
   const load = useCallback(() => {
     if (!session) return;
-    getRanchAnimals(ranchId, 1, session.accessToken, 200)
-      .then((res) => setAnimals(res.data.filter((a) => a.idProductiveStatus !== PRODUCTIVE_STATUS_IDS.BAJA)))
+    Promise.all([
+      getRanchAnimals(ranchId, page, session.accessToken, 20, { excludeProductiveStatus: PRODUCTIVE_STATUS_IDS.BAJA }),
+      // Conteo liviano (limit=1, solo se usa meta.total) — el estado "en observación" no depende
+      // de la etapa productiva, así que no se puede derivar de la página actual de animales.
+      getRanchAnimals(ranchId, 1, session.accessToken, 1, { idStatus: ANIMAL_STATUS_IDS.OBSERVATION }),
+    ])
+      .then(([animalsRes, observationRes]) => {
+        setAnimals(animalsRes.data);
+        setMeta(animalsRes.meta);
+        setInObservation(observationRes.meta.total);
+      })
       .catch((error) => toast.error(translateError(error, "No se pudieron cargar los animales.")))
       .finally(() => setIsLoading(false));
-  }, [session, ranchId]);
+  }, [session, ranchId, page]);
 
   useEffect(() => {
     load();
@@ -50,8 +63,6 @@ export function HealthPage() {
     setIsLoading(true);
     load();
   };
-
-  const inObservation = animals.filter((a) => a.status.id === ANIMAL_STATUS_IDS.OBSERVATION).length;
 
   return (
     <div className="flex flex-col gap-6">
@@ -71,7 +82,7 @@ export function HealthPage() {
 
       {!isLoading ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <StatTile icon={HeartPulse} color="blue" label="Animales activos" value={animals.length} delay={0} />
+          <StatTile icon={HeartPulse} color="blue" label="Animales activos" value={meta.total} delay={0} />
           <StatTile icon={Stethoscope} color="orange" label="En observación" value={inObservation} delay={60} />
         </div>
       ) : null}
@@ -81,7 +92,7 @@ export function HealthPage() {
           <CardHeader>
             <CardTitle>Animales</CardTitle>
             <CardDescription>
-              {animals.length} {animals.length === 1 ? "animal" : "animales"}
+              {meta.total} {meta.total === 1 ? "animal" : "animales"}
             </CardDescription>
             <CardAction />
           </CardHeader>
@@ -164,6 +175,7 @@ export function HealthPage() {
                 </TableBody>
               </Table>
             )}
+            <PaginationControls page={meta.page} pages={meta.pages} onPageChange={setPage} />
           </CardContent>
         </Card>
       </FadeIn>

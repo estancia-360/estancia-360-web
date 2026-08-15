@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { PlusCircle, RefreshCcw, ChevronLeft, ChevronRight, Beef, Venus, Mars } from "lucide-react";
+import { PlusCircle, RefreshCcw, Beef, Venus, Mars } from "lucide-react";
 import { motion } from "motion/react";
 import { toast } from "sonner";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardAction } from "@/components/ui/card";
@@ -11,6 +11,7 @@ import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/
 import { FadeIn } from "@/components/layout/fade-in";
 import { StatTile } from "@/components/layout/stat-tile";
 import { ModuleIcon } from "@/components/layout/module-icon";
+import { PaginationControls } from "@/components/layout/pagination-controls";
 import { CreateAnimalDialog } from "@/features/animals/components/create-animal-dialog";
 import { getRanchAnimals } from "@/features/animals/api/animals-api";
 import { PRODUCTIVE_STATUS_LABELS, type RanchAnimal } from "@/features/animals/types";
@@ -159,23 +160,7 @@ export function AnimalsPage() {
                   </TableBody>
                 </Table>
 
-                {meta.pages > 1 ? (
-                  <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
-                    <span>
-                      Página {meta.page} de {meta.pages}
-                    </span>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-                        <ChevronLeft data-icon="inline-start" />
-                        Anterior
-                      </Button>
-                      <Button variant="outline" size="sm" disabled={page >= meta.pages} onClick={() => setPage((p) => p + 1)}>
-                        Siguiente
-                        <ChevronRight data-icon="inline-end" />
-                      </Button>
-                    </div>
-                  </div>
-                ) : null}
+                <PaginationControls page={meta.page} pages={meta.pages} onPageChange={setPage} />
               </>
             )}
           </CardContent>

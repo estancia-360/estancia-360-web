@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useNavigate } from "react-router";
 import {
   LayoutDashboard,
+  Gauge,
   Beef,
   Baby,
   Sprout,
@@ -42,6 +43,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { useAuth } from "@/features/auth/context/use-auth";
 import { useRanchSubscription } from "@/features/subscriptions/context/ranch-subscription-context";
 import { hasProductionType, PRODUCTION_TYPE_IDS } from "@/features/subscriptions/types";
@@ -65,7 +67,10 @@ interface NavItem {
 const navGroups: { label: string; items: NavItem[] }[] = [
   {
     label: "General",
-    items: [{ to: "/dashboard", label: "Resumen", icon: LayoutDashboard, end: true }],
+    items: [
+      { to: "/dashboard", label: "Resumen", icon: LayoutDashboard, end: true },
+      { to: "/dashboard/estadisticas", label: "Dashboard", icon: Gauge, end: false, activeClassName: "bg-brand-blue/10 text-brand-blue" },
+    ],
   },
   {
     label: "Estancia",
@@ -236,8 +241,9 @@ export function RanchLayout() {
       </Sidebar>
 
       <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4">
+        <header className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-border px-4">
           <SidebarTrigger />
+          <ThemeToggle />
         </header>
         <div className="flex flex-1 flex-col gap-6 bg-brand-cream/40 p-6">
           <Outlet />

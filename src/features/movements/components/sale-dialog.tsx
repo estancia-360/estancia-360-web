@@ -67,7 +67,6 @@ export function SaleDialog({ idRanch, open, onOpenChange, onCreated }: SaleDialo
       await registerMovement(
         {
           idRanch,
-          idUser: session.idUser,
           movementType: "sale",
           movementDate: new Date(values.movementDate).toISOString(),
           counterpartName: values.counterpartName,

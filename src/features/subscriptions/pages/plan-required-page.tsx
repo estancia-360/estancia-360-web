@@ -1,5 +1,6 @@
 import { LogOut, Lock } from "lucide-react";
 import { Container } from "@/components/layout/container";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { BrandLogo, BrandWordmark } from "@/features/landing/components/brand-logo";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from "@/components/ui/empty";
@@ -23,15 +24,18 @@ export function PlanRequiredPage({ subscription }: PlanRequiredPageProps) {
 
   return (
     <div className="min-h-screen bg-brand-cream">
-      <header className="flex h-18 items-center justify-between border-b border-brand-blue/10 bg-white px-5 sm:px-8">
+      <header className="flex h-18 items-center justify-between border-b border-brand-blue/10 bg-card px-5 sm:px-8">
         <div className="flex items-center gap-2.5">
           <BrandLogo size={28} />
           <BrandWordmark className="text-xl" />
         </div>
-        <Button variant="ghost" onClick={logout}>
-          <LogOut data-icon="inline-start" />
-          Cerrar sesión
-        </Button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Button variant="ghost" onClick={logout}>
+            <LogOut data-icon="inline-start" />
+            Cerrar sesión
+          </Button>
+        </div>
       </header>
 
       <Container className="flex min-h-[calc(100vh-4.5rem)] items-center justify-center py-16">

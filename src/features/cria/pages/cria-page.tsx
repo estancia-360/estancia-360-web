@@ -12,6 +12,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { FadeIn } from "@/components/layout/fade-in";
 import { StatTile } from "@/components/layout/stat-tile";
 import { ModuleIcon } from "@/components/layout/module-icon";
+import { PaginationControls } from "@/components/layout/pagination-controls";
 import { RegisterBreedingServiceDialog } from "@/features/cria/components/register-breeding-service-dialog";
 import { GestationDiagnosisDialog } from "@/features/cria/components/gestation-diagnosis-dialog";
 import { ParturitionDialog } from "@/features/cria/components/parturition-dialog";
@@ -45,6 +46,7 @@ const SERVICE_TYPE_STYLE: Record<ServiceType, { icon: typeof Heart; className: s
 };
 
 const ROW_CLASS = "border-b transition-colors hover:bg-muted/50";
+const EMPTY_META = { page: 1, limit: 20, total: 0, pages: 1 };
 
 function formatDate(value: string): string {
   return new Date(value).toLocaleDateString("es-BO", { timeZone: "UTC" });
@@ -61,6 +63,15 @@ export function CriaPage() {
   const [weanings, setWeanings] = useState<Weaning[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [servicesPage, setServicesPage] = useState(1);
+  const [diagnosesPage, setDiagnosesPage] = useState(1);
+  const [parturitionsPage, setParturitionsPage] = useState(1);
+  const [weaningsPage, setWeaningsPage] = useState(1);
+  const [servicesMeta, setServicesMeta] = useState(EMPTY_META);
+  const [diagnosesMeta, setDiagnosesMeta] = useState(EMPTY_META);
+  const [parturitionsMeta, setParturitionsMeta] = useState(EMPTY_META);
+  const [weaningsMeta, setWeaningsMeta] = useState(EMPTY_META);
+
   const [isServiceOpen, setIsServiceOpen] = useState(false);
   const [diagnosisService, setDiagnosisService] = useState<BreedingService | null>(null);
   const [parturitionDiagnosis, setParturitionDiagnosis] = useState<GestationDiagnosis | null>(null);
@@ -69,20 +80,24 @@ export function CriaPage() {
   const load = useCallback(() => {
     if (!session) return;
     Promise.all([
-      getBreedingServices(ranchId, 1, session.accessToken),
-      getGestationDiagnoses(ranchId, 1, session.accessToken),
-      getParturitions(ranchId, 1, session.accessToken),
-      getWeanings(ranchId, 1, session.accessToken),
+      getBreedingServices(ranchId, servicesPage, session.accessToken),
+      getGestationDiagnoses(ranchId, diagnosesPage, session.accessToken),
+      getParturitions(ranchId, parturitionsPage, session.accessToken),
+      getWeanings(ranchId, weaningsPage, session.accessToken),
     ])
       .then(([servicesRes, diagnosesRes, parturitionsRes, weaningsRes]) => {
         setServices(servicesRes.data);
+        setServicesMeta(servicesRes.meta);
         setDiagnoses(diagnosesRes.data);
+        setDiagnosesMeta(diagnosesRes.meta);
         setParturitions(parturitionsRes.data);
+        setParturitionsMeta(parturitionsRes.meta);
         setWeanings(weaningsRes.data);
+        setWeaningsMeta(weaningsRes.meta);
       })
       .catch((error) => toast.error(translateError(error, "No se pudo cargar el ciclo de cría.")))
       .finally(() => setIsLoading(false));
-  }, [session, ranchId]);
+  }, [session, ranchId, servicesPage, diagnosesPage, parturitionsPage, weaningsPage]);
 
   useEffect(() => {
     load();
@@ -111,10 +126,10 @@ export function CriaPage() {
 
       {!isLoading ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <StatTile icon={Heart} color="orange" label="Servicios" value={services.length} delay={0} />
-          <StatTile icon={Stethoscope} color="blue" label="Diagnósticos" value={diagnoses.length} delay={60} />
-          <StatTile icon={Baby} color="green" label="Partos" value={parturitions.length} delay={120} />
-          <StatTile icon={ArrowRightCircle} color="accent" label="Destetes" value={weanings.length} delay={180} />
+          <StatTile icon={Heart} color="orange" label="Servicios" value={servicesMeta.total} delay={0} />
+          <StatTile icon={Stethoscope} color="blue" label="Diagnósticos" value={diagnosesMeta.total} delay={60} />
+          <StatTile icon={Baby} color="green" label="Partos" value={parturitionsMeta.total} delay={120} />
+          <StatTile icon={ArrowRightCircle} color="accent" label="Destetes" value={weaningsMeta.total} delay={180} />
         </div>
       ) : null}
 
@@ -192,6 +207,7 @@ export function CriaPage() {
                     </TableBody>
                   </Table>
                 )}
+                <PaginationControls page={servicesMeta.page} pages={servicesMeta.pages} onPageChange={setServicesPage} />
               </TabsContent>
 
               <TabsContent value="diagnoses" className="pt-4">
@@ -255,6 +271,7 @@ export function CriaPage() {
                     </TableBody>
                   </Table>
                 )}
+                <PaginationControls page={diagnosesMeta.page} pages={diagnosesMeta.pages} onPageChange={setDiagnosesPage} />
               </TabsContent>
 
               <TabsContent value="parturitions" className="pt-4">
@@ -319,6 +336,7 @@ export function CriaPage() {
                     </TableBody>
                   </Table>
                 )}
+                <PaginationControls page={parturitionsMeta.page} pages={parturitionsMeta.pages} onPageChange={setParturitionsPage} />
               </TabsContent>
 
               <TabsContent value="weanings" className="pt-4">
@@ -365,6 +383,7 @@ export function CriaPage() {
                     </TableBody>
                   </Table>
                 )}
+                <PaginationControls page={weaningsMeta.page} pages={weaningsMeta.pages} onPageChange={setWeaningsPage} />
               </TabsContent>
             </Tabs>
           </CardContent>

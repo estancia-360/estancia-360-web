@@ -92,6 +92,9 @@ const ERROR_MESSAGES: Record<string, string> = {
 
   // Cargas masivas
   BULK_IMPORT_EMPTY: "El archivo no tiene ninguna fila válida para importar.",
+
+  // Dashboard
+  PERMISSION_DENIED: "No tenés permiso para ver esto.",
 };
 
 /**

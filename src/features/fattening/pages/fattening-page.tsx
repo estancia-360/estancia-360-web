@@ -11,6 +11,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { FadeIn } from "@/components/layout/fade-in";
 import { StatTile } from "@/components/layout/stat-tile";
 import { ModuleIcon } from "@/components/layout/module-icon";
+import { PaginationControls } from "@/components/layout/pagination-controls";
 import { WeightRecordDialog } from "@/features/rearing/components/weight-record-dialog";
 import { FatteningEntryDialog } from "@/features/fattening/components/fattening-entry-dialog";
 import { FeedRecordDialog } from "@/features/fattening/components/feed-record-dialog";
@@ -23,6 +24,7 @@ import { useRanchSubscription } from "@/features/subscriptions/context/ranch-sub
 import { translateError } from "@/lib/error-messages";
 
 const ROW_CLASS = "border-b transition-colors hover:bg-muted/50";
+const EMPTY_META = { page: 1, limit: 20, total: 0, pages: 1 };
 
 function formatDate(value: string): string {
   return new Date(value).toLocaleDateString("es-BO", { timeZone: "UTC" });
@@ -34,8 +36,11 @@ export function FatteningPage() {
   const ranchId = ranch.id;
 
   const [animals, setAnimals] = useState<RanchAnimal[]>([]);
+  const [animalsPage, setAnimalsPage] = useState(1);
+  const [animalsMeta, setAnimalsMeta] = useState(EMPTY_META);
   const [fatteningLots, setFatteningLots] = useState<RanchLot[]>([]);
-  const [feedRecordsByLot, setFeedRecordsByLot] = useState<Record<number, FeedRecord[]>>({});
+  const [feedByLot, setFeedByLot] = useState<Record<number, { records: FeedRecord[]; meta: typeof EMPTY_META }>>({});
+  const [feedPageByLot, setFeedPageByLot] = useState<Record<number, number>>({});
   const [isLoading, setIsLoading] = useState(true);
 
   const [isEntryOpen, setIsEntryOpen] = useState(false);
@@ -44,20 +49,28 @@ export function FatteningPage() {
 
   const load = useCallback(() => {
     if (!session) return;
-    Promise.all([getRanchAnimals(ranchId, 1, session.accessToken, 200), getRanchLots(ranchId, session.accessToken)])
+    Promise.all([
+      getRanchAnimals(ranchId, animalsPage, session.accessToken, 20, { idProductiveStatus: PRODUCTIVE_STATUS_IDS.ENGORDE }),
+      getRanchLots(ranchId, session.accessToken),
+    ])
       .then(async ([animalsRes, lots]) => {
-        setAnimals(animalsRes.data.filter((a) => a.idProductiveStatus === PRODUCTIVE_STATUS_IDS.ENGORDE));
+        setAnimals(animalsRes.data);
+        setAnimalsMeta(animalsRes.meta);
         const engordeLots = lots.filter((l) => l.lotType === "engorde");
         setFatteningLots(engordeLots);
 
         const feedResults = await Promise.all(
-          engordeLots.map((lot) => getFeedRecords(lot.id, 1, session.accessToken).then((res) => [lot.id, res.data] as const)),
+          engordeLots.map((lot) =>
+            getFeedRecords(lot.id, feedPageByLot[lot.id] ?? 1, session.accessToken).then(
+              (res) => [lot.id, { records: res.data, meta: res.meta }] as const,
+            ),
+          ),
         );
-        setFeedRecordsByLot(Object.fromEntries(feedResults));
+        setFeedByLot(Object.fromEntries(feedResults));
       })
       .catch((error) => toast.error(translateError(error, "No se pudieron cargar los datos de engorde.")))
       .finally(() => setIsLoading(false));
-  }, [session, ranchId]);
+  }, [session, ranchId, animalsPage, feedPageByLot]);
 
   useEffect(() => {
     load();
@@ -68,7 +81,7 @@ export function FatteningPage() {
     load();
   };
 
-  const totalFeedRecords = Object.values(feedRecordsByLot).reduce((sum, records) => sum + records.length, 0);
+  const totalFeedRecords = Object.values(feedByLot).reduce((sum, entry) => sum + entry.meta.total, 0);
 
   return (
     <div className="flex flex-col gap-6">
@@ -94,7 +107,7 @@ export function FatteningPage() {
 
       {!isLoading ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <StatTile icon={UtensilsCrossed} color="green" label="Animales en engorde" value={animals.length} delay={0} />
+          <StatTile icon={UtensilsCrossed} color="green" label="Animales en engorde" value={animalsMeta.total} delay={0} />
           <StatTile icon={Wheat} color="orange" label="Lotes de engorde" value={fatteningLots.length} delay={60} />
           <StatTile icon={Scale} color="blue" label="Registros de alimentación" value={totalFeedRecords} delay={120} />
         </div>
@@ -167,6 +180,7 @@ export function FatteningPage() {
                     </TableBody>
                   </Table>
                 )}
+                <PaginationControls page={animalsMeta.page} pages={animalsMeta.pages} onPageChange={setAnimalsPage} />
               </TabsContent>
 
               <TabsContent value="feeding" className="pt-4">
@@ -186,14 +200,16 @@ export function FatteningPage() {
                 ) : (
                   <div className="flex flex-col gap-4">
                     {fatteningLots.map((lot) => {
-                      const records = feedRecordsByLot[lot.id] ?? [];
+                      const entry = feedByLot[lot.id];
+                      const records = entry?.records ?? [];
+                      const feedMeta = entry?.meta ?? EMPTY_META;
                       return (
                         <div key={lot.id} className="rounded-lg ring-1 ring-foreground/10">
                           <div className="flex items-center justify-between px-4 py-3">
                             <div>
                               <p className="font-medium">{lot.name}</p>
                               <p className="text-sm text-muted-foreground">
-                                {records.length} {records.length === 1 ? "registro" : "registros"}
+                                {feedMeta.total} {feedMeta.total === 1 ? "registro" : "registros"}
                               </p>
                             </div>
                             <Button variant="outline" size="sm" onClick={() => setFeedLot(lot)}>
@@ -202,28 +218,36 @@ export function FatteningPage() {
                             </Button>
                           </div>
                           {records.length > 0 ? (
-                            <Table>
-                              <TableHeader>
-                                <TableRow>
-                                  <TableHead>Tipo</TableHead>
-                                  <TableHead>Cantidad</TableHead>
-                                  <TableHead>Costo</TableHead>
-                                  <TableHead>Fecha</TableHead>
-                                </TableRow>
-                              </TableHeader>
-                              <TableBody>
-                                {records.map((record) => (
-                                  <TableRow key={record.id}>
-                                    <TableCell className="font-medium">{record.feedType}</TableCell>
-                                    <TableCell className="text-muted-foreground">
-                                      {record.quantity ? `${record.quantity} ${record.unit ?? ""}` : "—"}
-                                    </TableCell>
-                                    <TableCell className="text-muted-foreground">{record.cost ? `Bs ${record.cost}` : "—"}</TableCell>
-                                    <TableCell className="text-muted-foreground">{formatDate(record.feedDate)}</TableCell>
+                            <>
+                              <Table>
+                                <TableHeader>
+                                  <TableRow>
+                                    <TableHead>Tipo</TableHead>
+                                    <TableHead>Cantidad</TableHead>
+                                    <TableHead>Costo</TableHead>
+                                    <TableHead>Fecha</TableHead>
                                   </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
+                                </TableHeader>
+                                <TableBody>
+                                  {records.map((record) => (
+                                    <TableRow key={record.id}>
+                                      <TableCell className="font-medium">{record.feedType}</TableCell>
+                                      <TableCell className="text-muted-foreground">
+                                        {record.quantity ? `${record.quantity} ${record.unit ?? ""}` : "—"}
+                                      </TableCell>
+                                      <TableCell className="text-muted-foreground">{record.cost ? `Bs ${record.cost}` : "—"}</TableCell>
+                                      <TableCell className="text-muted-foreground">{formatDate(record.feedDate)}</TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                              <PaginationControls
+                                page={feedMeta.page}
+                                pages={feedMeta.pages}
+                                onPageChange={(nextPage) => setFeedPageByLot((prev) => ({ ...prev, [lot.id]: nextPage }))}
+                                className="px-4 pb-3"
+                              />
+                            </>
                           ) : (
                             <p className="px-4 pb-3 text-sm text-muted-foreground">Sin registros de alimentación todavía.</p>
                           )}
