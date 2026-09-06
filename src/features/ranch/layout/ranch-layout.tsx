@@ -15,7 +15,7 @@ import {
   Fence,
   UploadCloud,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 import { BrandLogo } from "@/features/landing/components/brand-logo";
 import {
   SidebarProvider,
@@ -142,7 +142,7 @@ export function RanchLayout() {
   const { session, logout } = useAuth();
   const subscription = useRanchSubscription();
   const navigate = useNavigate();
-  const initials = `U${session?.idUser}`.slice(0, 2).toUpperCase();
+  const initials = session ? getInitials(session.fullname) : "?";
   const hasMultipleRanches = (session?.ranches.length ?? 0) > 1;
 
   const handleSwitchRanch = () => {
@@ -213,7 +213,7 @@ export function RanchLayout() {
                   <Avatar className="size-6 rounded-md">
                     <AvatarFallback className="rounded-md bg-brand-green text-[0.65rem] text-white">{initials}</AvatarFallback>
                   </Avatar>
-                  <span className="truncate text-sm">Usuario #{session?.idUser}</span>
+                  <span className="truncate text-sm">{session?.fullname}</span>
                 </SidebarMenuButton>
               }
             />

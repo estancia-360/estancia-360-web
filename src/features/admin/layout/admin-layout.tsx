@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from "react-router";
 import { LayoutDashboard, ReceiptText, Users, LogOut, User } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, getInitials } from "@/lib/utils";
 import { BrandLogo } from "@/features/landing/components/brand-logo";
 import {
   SidebarProvider,
@@ -46,7 +46,7 @@ const navGroups = [
 
 export function AdminLayout() {
   const { session, logout } = useAuth();
-  const initials = session ? `U${session.idUser}`.slice(0, 2).toUpperCase() : "AD";
+  const initials = session ? getInitials(session.fullname) : "AD";
 
   return (
     <SidebarProvider>
@@ -99,7 +99,7 @@ export function AdminLayout() {
                       {initials}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="truncate text-sm">Usuario #{session?.idUser}</span>
+                  <span className="truncate text-sm">{session?.fullname ?? "Admin"}</span>
                 </SidebarMenuButton>
               }
             />

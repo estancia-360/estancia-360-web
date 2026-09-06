@@ -10,6 +10,7 @@ export interface LoginResponse {
   accessToken: string;
   idUser: number;
   idRole: number;
+  fullname: string;
   ranches: OwnedRanch[];
 }
 

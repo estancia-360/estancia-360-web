@@ -4,6 +4,7 @@ export interface StoredSession {
   accessToken: string;
   idUser: number;
   idRole: number;
+  fullname: string;
   ranches: OwnedRanch[];
 }
 

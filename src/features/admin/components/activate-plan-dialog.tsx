@@ -24,8 +24,6 @@ interface ActivatePlanDialogProps {
   onActivated: (subscription: RanchSubscription) => void;
 }
 
-const FREE_PLAN_ID = 1;
-
 const billingCycleItems: Array<{ label: string; value: BillingCycle | null }> = [
   { label: "Seleccioná un ciclo", value: null },
   { label: "Mensual", value: "monthly" },
@@ -60,7 +58,9 @@ export function ActivatePlanDialog({ subscription, onOpenChange, onActivated }: 
 
   const planItems = [{ label: "Seleccioná un plan", value: null }, ...plans.map((plan) => ({ label: plan.name, value: plan.id }))];
   const selectedPlan = plans.find((plan) => plan.id === selectedPlanId);
-  const requiresBillingCycle = selectedPlan ? selectedPlan.id !== FREE_PLAN_ID : false;
+  // 12e (auditoria QA E2E, 2026-09-03): "Free" se identifica por precio (priceMonthly === 0),
+  // no por un ID de plan hardcodeado.
+  const requiresBillingCycle = selectedPlan ? selectedPlan.priceMonthly > 0 : false;
 
   const handleSubmit = async () => {
     if (!subscription || !session || !selectedPlanId) return;

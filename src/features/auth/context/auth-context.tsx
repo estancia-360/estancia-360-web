@@ -19,6 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       accessToken: response.accessToken,
       idUser: response.idUser,
       idRole: response.idRole,
+      fullname: response.fullname,
       ranches: response.ranches,
     };
     writeStoredSession(nextSession);

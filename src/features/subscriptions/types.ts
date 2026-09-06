@@ -6,8 +6,6 @@ export type SubscriptionEffectiveStatus = "trial" | "active" | "expired" | "canc
 export type BillingCycle = "monthly" | "annual";
 export type PaymentMethod = "qr" | "transfer";
 
-export const FREE_PLAN_ID = 1;
-
 // Rubros de producción — misma numeración que el catálogo del backend
 // (production_types). Nunca puede haber Engorde sin Recría, ni Recría sin
 // Cría (RN-09) — se valida al crear la estancia, así que alcanza con chequear
@@ -54,9 +52,15 @@ export interface RanchSubscription {
   createdAt: string;
 }
 
-/** Plan pago (no Free) y en un estado que permite acceso (trial o active). */
+/**
+ * Plan pago (no Free) y en un estado que permite acceso (trial o active).
+ *
+ * 12e (auditoria QA E2E, 2026-09-03): antes comparaba subscription.idPlan contra un
+ * FREE_PLAN_ID=1 hardcodeado — frágil si el catálogo de planes cambia de orden en algún
+ * entorno. "Free" se identifica por precio (priceMonthly === 0), no por un ID fijo.
+ */
 export function hasActivePaidPlan(subscription: RanchSubscription): boolean {
-  return subscription.idPlan !== FREE_PLAN_ID && (subscription.effectiveStatus === "active" || subscription.effectiveStatus === "trial");
+  return subscription.plan.priceMonthly > 0 && (subscription.effectiveStatus === "active" || subscription.effectiveStatus === "trial");
 }
 
 /** El rubro está habilitado para esta estancia (Recría/Engorde) — Sanidad y Movimientos no son rubros, siempre aplican. */
