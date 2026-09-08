@@ -31,10 +31,10 @@ export function NoRanchPage() {
             <EmptyMedia variant="icon">
               <BrandLogo size={40} />
             </EmptyMedia>
-            <EmptyTitle>Tu usuario no es dueño de ninguna estancia</EmptyTitle>
+            <EmptyTitle>Tu usuario no tiene acceso a ninguna estancia</EmptyTitle>
             <EmptyDescription>
-              El panel web es solo para el dueño de la estancia. Contactá a Estancia360 para vincular tu cuenta o usá la app móvil si
-              trabajás en una estancia de otra persona.
+              El panel web es para el dueño de una estancia o los administradores que agregó. Si trabajás en una estancia, pedile al
+              dueño que te agregue como administrador desde su panel.
             </EmptyDescription>
           </EmptyHeader>
         </Empty>

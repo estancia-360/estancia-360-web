@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { UserPlus, RefreshCcw, Users, Crown, HardHat, ShieldCheck } from "lucide-react";
+import { UserPlus, RefreshCcw, Users, Crown, HardHat, ShieldCheck, Trash2 } from "lucide-react";
 import { motion } from "motion/react";
 import { toast } from "sonner";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardAction } from "@/components/ui/card";
@@ -13,11 +13,14 @@ import { FadeIn } from "@/components/layout/fade-in";
 import { StatTile } from "@/components/layout/stat-tile";
 import { ModuleIcon } from "@/components/layout/module-icon";
 import { RegisterRanchMemberDialog } from "@/features/ranch/components/register-ranch-member-dialog";
-import { getRanchMembers } from "@/features/ranch/api/members-api";
+import { RemoveRanchMemberDialog } from "@/features/ranch/components/remove-ranch-member-dialog";
+import { getRanchMembers, removeRanchMember } from "@/features/ranch/api/members-api";
 import type { RanchMember } from "@/features/ranch/types/members";
 import { useAuth } from "@/features/auth/context/use-auth";
 import { useRanchSubscription } from "@/features/subscriptions/context/ranch-subscription-context";
 import { translateError } from "@/lib/error-messages";
+
+const OWNER_ROLE_ID = 1;
 
 const ROLE_STYLE: Record<number, { label: string; icon: typeof Crown; className: string }> = {
   1: { label: "Dueño", icon: Crown, className: "bg-brand-blue text-white" },
@@ -43,6 +46,7 @@ export function RanchTeamPage() {
   const [members, setMembers] = useState<RanchMember[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [memberToRemove, setMemberToRemove] = useState<RanchMember | null>(null);
 
   const load = useCallback(() => {
     if (!session) return;
@@ -61,6 +65,18 @@ export function RanchTeamPage() {
     load();
   };
 
+  const handleRemove = async () => {
+    if (!session || !memberToRemove) return;
+    try {
+      await removeRanchMember(ranch.id, memberToRemove.idUser, session.accessToken);
+      toast.success(`${memberToRemove.user.fullname} ya no forma parte del equipo`);
+      load();
+    } catch (error) {
+      toast.error(translateError(error, "No se pudo eliminar al miembro."));
+      throw error;
+    }
+  };
+
   const counts = useMemo(
     () => ({
       workers: members.filter((m) => m.role.id === 2).length,
@@ -68,6 +84,10 @@ export function RanchTeamPage() {
     }),
     [members],
   );
+
+  // Agregar/eliminar miembros es exclusivo del Dueño (backend lo exige) — se ocultan
+  // esos controles para el resto en vez de dejar que fallen al hacer clic.
+  const isCurrentUserOwner = members.some((m) => m.idUser === session?.idUser && m.role.id === OWNER_ROLE_ID);
 
   return (
     <div className="flex flex-col gap-6">
@@ -84,10 +104,12 @@ export function RanchTeamPage() {
             <RefreshCcw data-icon="inline-start" />
             Actualizar
           </Button>
-          <Button size="sm" onClick={() => setIsCreateOpen(true)}>
-            <UserPlus data-icon="inline-start" />
-            Nuevo miembro
-          </Button>
+          {isCurrentUserOwner ? (
+            <Button size="sm" onClick={() => setIsCreateOpen(true)}>
+              <UserPlus data-icon="inline-start" />
+              Nuevo miembro
+            </Button>
+          ) : null}
         </div>
       </FadeIn>
 
@@ -121,7 +143,9 @@ export function RanchTeamPage() {
                     <Users className="size-6" />
                   </EmptyMedia>
                   <EmptyTitle>No hay miembros todavía</EmptyTitle>
-                  <EmptyDescription>Agregá trabajadores o administradores con el botón de arriba.</EmptyDescription>
+                  <EmptyDescription>
+                    {isCurrentUserOwner ? "Agregá administradores con el botón de arriba." : "El dueño de la estancia todavía no agregó a nadie."}
+                  </EmptyDescription>
                 </EmptyHeader>
               </Empty>
             ) : (
@@ -132,11 +156,13 @@ export function RanchTeamPage() {
                     <TableHead>Correo</TableHead>
                     <TableHead>CI</TableHead>
                     <TableHead>Rol</TableHead>
+                    {isCurrentUserOwner ? <TableHead className="w-0" /> : null}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {members.map((member, index) => {
                     const role = ROLE_STYLE[member.role.id];
+                    const isOwner = member.role.id === OWNER_ROLE_ID;
                     return (
                       <motion.tr
                         key={member.idUser}
@@ -163,6 +189,21 @@ export function RanchTeamPage() {
                             {role?.label ?? member.role.name}
                           </Badge>
                         </TableCell>
+                        {isCurrentUserOwner ? (
+                          <TableCell>
+                            {isOwner ? null : (
+                              <Button
+                                variant="ghost"
+                                size="icon-sm"
+                                className="text-muted-foreground hover:text-destructive"
+                                onClick={() => setMemberToRemove(member)}
+                              >
+                                <Trash2 />
+                                <span className="sr-only">Eliminar</span>
+                              </Button>
+                            )}
+                          </TableCell>
+                        ) : null}
                       </motion.tr>
                     );
                   })}
@@ -174,6 +215,16 @@ export function RanchTeamPage() {
       </FadeIn>
 
       <RegisterRanchMemberDialog idRanch={ranch.id} open={isCreateOpen} onOpenChange={setIsCreateOpen} onCreated={load} />
+      {memberToRemove ? (
+        <RemoveRanchMemberDialog
+          open={memberToRemove !== null}
+          onOpenChange={(open) => {
+            if (!open) setMemberToRemove(null);
+          }}
+          memberName={`${memberToRemove.user.fullname} ${memberToRemove.user.paternalSurname}`}
+          onConfirm={handleRemove}
+        />
+      ) : null}
     </div>
   );
 }

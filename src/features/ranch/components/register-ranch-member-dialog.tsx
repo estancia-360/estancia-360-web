@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Users } from "lucide-react";
 import { toast } from "sonner";
@@ -15,7 +15,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldGroup, FieldLabel, FieldError } from "@/components/ui/field";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { ModuleIcon } from "@/components/layout/module-icon";
 import { registerRanchMember } from "@/features/ranch/api/members-api";
@@ -38,7 +37,6 @@ const emptyValues: RegisterRanchMemberValues = {
   email: "",
   password: "",
   celphone: "",
-  ranchRole: "worker",
 };
 
 export function RegisterRanchMemberDialog({ idRanch, open, onOpenChange, onCreated }: RegisterRanchMemberDialogProps) {
@@ -46,7 +44,6 @@ export function RegisterRanchMemberDialog({ idRanch, open, onOpenChange, onCreat
 
   const {
     register,
-    control,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
@@ -77,42 +74,13 @@ export function RegisterRanchMemberDialog({ idRanch, open, onOpenChange, onCreat
         <DialogHeader className="flex-row items-center gap-3 space-y-0">
           <ModuleIcon icon={Users} color="blue" size="sm" />
           <div>
-            <DialogTitle>Nuevo miembro del equipo</DialogTitle>
-            <DialogDescription>Se crea la cuenta y queda vinculada a esta estancia con el rol que elijas.</DialogDescription>
+            <DialogTitle>Nuevo administrador</DialogTitle>
+            <DialogDescription>Se crea la cuenta y queda vinculada a esta estancia como Administrador.</DialogDescription>
           </div>
         </DialogHeader>
 
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
-            <Field data-invalid={!!errors.ranchRole}>
-              <FieldLabel htmlFor="ranchRole">Rol en la estancia</FieldLabel>
-              <Controller
-                control={control}
-                name="ranchRole"
-                render={({ field }) => (
-                  <Select
-                    items={[
-                      { label: "Trabajador", value: "worker" },
-                      { label: "Administrador", value: "administrator" },
-                    ]}
-                    value={field.value}
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger id="ranchRole" className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="worker">Trabajador</SelectItem>
-                        <SelectItem value="administrator">Administrador</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              <FieldError errors={[errors.ranchRole]} />
-            </Field>
-
             <Field data-invalid={!!errors.fullname}>
               <FieldLabel htmlFor="fullname">Nombre completo</FieldLabel>
               <Input id="fullname" placeholder="Juan Carlos Pérez" aria-invalid={!!errors.fullname} {...register("fullname")} />

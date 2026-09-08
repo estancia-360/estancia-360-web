@@ -1,5 +1,3 @@
-export type RanchMemberRole = "worker" | "administrator";
-
 export interface RanchMember {
   idUser: number;
   idRanch: number;
